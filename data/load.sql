@@ -49,5 +49,5 @@ CREATE TABLE trains (
 	first_ac int,
 	distance int
 );
-
+dipen
 \copy stations from '/home/manoj/Desktop/sem_6/COL362-dbms/project/project/data/trains.csv' delimiter ',' csv header;
