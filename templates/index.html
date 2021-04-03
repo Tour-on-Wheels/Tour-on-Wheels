@@ -34,13 +34,10 @@
             <td>{{task[2]}}</td>
             <td>{{task[3]}}</td>
             <td>{{task[4]}}</td>
-            <td>Book Ticket</td>
+            <td><a href="/booking/{{task, src, dest}}">Check Availability</a></td>
         </tr>
         {% endfor %}
     </table>
     </div>
-    {% for task in tasks %}
-    {{task[0]}}, {{task[1]}}</br>
-    {% endfor %}
     </div>
 {% endblock %}

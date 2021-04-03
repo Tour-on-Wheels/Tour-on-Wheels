@@ -1,5 +1,9 @@
 frontend
 1. index.html : search train : source & dest (station code + name) : trains hyperlink -> booking.html + train_id
+need inputs:
+source, destination, date, class:
+outputs: required
+
 
 2. booking.html : (train_id) trains.csv details  -> final.html
 
