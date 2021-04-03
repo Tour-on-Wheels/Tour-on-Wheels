@@ -31,7 +31,7 @@ def index():
         task_content2 = request.form['destination']
         cursor.execute(f"SELECT s1.arrival, s1.departure, s1.train_name, s1.train_number, s2.arrival FROM schedules as s1, schedules as s2 where s1.station_name = '{task_content1}' AND s2.station_name = '{task_content1}' and s1.train_number = s2.train_number ORDER BY s1.arrival;" )
         tasks = cursor.fetchall()
-        print(type(tasks[0]))
+        # print(type(tasks[0]))
         return render_template('index.html', tasks = tasks, src = task_content1, dest = task_content2)
     elif(request.method == 'GET'):
     #     tasks = Todo.query.order_by(Todo.date_created).all()
