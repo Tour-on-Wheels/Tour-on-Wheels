@@ -1,6 +1,9 @@
+DROP INDEX IF EXISTS seat_coach_PNR_constraint;
+DROP TABLE IF EXISTS PNR;
 DROP TABLE IF EXISTS schedules;
 DROP TABLE IF EXISTS trains;
 DROP TABLE IF EXISTS stations;
+DROP TABLE IF EXISTS coach;
 
 
 CREATE TABLE stations (
@@ -57,3 +60,32 @@ CREATE TABLE schedules (
 );
 
 \copy schedules from 'data/schedules.csv' delimiter ',' csv header;
+
+CREATE TABLE coach (
+	coach_name text primary key,
+	coach_type text not null,
+	total_seats int
+);
+
+CREATE TABLE PNR (
+	PNR_no text primary key,
+	train_number text not null,
+	date date not null,
+	coach_no text not null,
+	seat_no int not null,
+	name text not null,
+	age int not null,
+	gender text not null,
+	mobile text null,
+	email text null,
+	source_schedule int not null,
+	dest_schedule int not null,
+	delete int default 0,
+	constraint train_PNR_constraint foreign key (train_number) references trains(number),
+	constraint coach_PNR_constraint foreign key (coach_no) references coach(coach_name),
+	constraint source_PNR_constraint foreign key (source_schedule) references schedules(id),
+	constraint dest_PNR_constraint foreign key (dest_schedule) references schedules(id)
+);
+
+CREATE index seat_coach_PNR_constraint
+on PNR (train_number, date, coach_no, seat_no);

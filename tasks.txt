@@ -14,6 +14,6 @@ frontend
 postgresql:
 1. create table (tickets) date, train_id, seats_available, coach_class, 
 
-2. create table (PNR) PNR No., date, train_id, coach no., seat_type, name, age, gender, mob. no(nullable), email_id (nullable), source(station_id), destination(station_id)
+2. create table (PNR) PNR No., date, train_id, coach no., seat_no, name, age, gender, mob. no(nullable), email_id (nullable), source(station_id), destination(station_id)
 
 3. crate table (coach) : coach_name, coach_type, total_seats
