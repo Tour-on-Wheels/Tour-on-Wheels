@@ -63,9 +63,32 @@ CREATE TABLE schedules (
 
 CREATE TABLE coach (
 	coach_name text primary key,
-	coach_type text not null,
-	total_seats int
+	class text not null,
+	total_seats int,
+	coach_type text not null
 );
+
+insert into coach values ('H1', '1AC', 24, 'Upper Lower');
+insert into coach values ('H2', '1AC', 24, 'Upper Lower');
+insert into coach values ('H3', '1AC', 24, 'Upper Lower');
+insert into coach values ('A1', '2AC', 45, 'Upper Lower SUpper SLower');
+insert into coach values ('A2', '2AC', 45, 'Upper Lower SUpper SLower');
+insert into coach values ('A3', '2AC', 53, 'Upper Lower SUpper SLower');
+insert into coach values ('B1', '3AC', 63, 'Upper Middle Lower SUpper SLower');
+insert into coach values ('B2', '3AC', 63, 'Upper Middle Lower SUpper SLower');
+insert into coach values ('B3', '3AC', 63, 'Upper Middle Lower SUpper SLower');
+insert into coach values ('S1', 'SL', 71, 'Upper Middle Lower SUpper SLower');
+insert into coach values ('S2', 'SL', 71, 'Upper Middle Lower SUpper SLower');
+insert into coach values ('S3', 'SL', 71, 'Upper Middle Lower SUpper SLower');
+insert into coach values ('C1', 'CC', 73, 'Aisle Middle Window');
+insert into coach values ('C2', 'CC', 73, 'Aisle Middle Window');
+insert into coach values ('C3', 'CC', 73, 'Aisle Middle Window');
+insert into coach values ('D1', '2S', 73, 'Aisle Middle Window');
+insert into coach values ('D2', '2S', 73, 'Aisle Middle Window');
+insert into coach values ('D3', '2S', 73, 'Aisle Middle Window');
+insert into coach values ('F1', 'FC', 26, 'Upper Lower');
+insert into coach values ('F2', 'FC', 26, 'Upper Lower');
+insert into coach values ('F3', 'FC', 26, 'Upper Lower');
 
 CREATE TABLE PNR (
 	PNR_no text primary key,
@@ -73,6 +96,7 @@ CREATE TABLE PNR (
 	date date not null,
 	coach_no text not null,
 	seat_no int not null,
+	birth_type text not null,
 	name text not null,
 	age int not null,
 	gender text not null,
