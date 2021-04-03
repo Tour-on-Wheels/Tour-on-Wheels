@@ -27,7 +27,7 @@
 </div>
 <div class="content2">
     <table class="table">
-        <tr> 
+    <tbody><tr> 
             <th>Arrival on {{src}}</th>
             <th>Departure from {{src}}</th>
             <th>Train Name</th>
@@ -45,6 +45,7 @@
             <td><a href="/booking/{{src}}/{{dest}}/{{task[3]}}/{{date}}">Check Availability</a></td>
         </tr>
         {% endfor %}
+    </tbody>
     </table>
 </div>
 
@@ -52,5 +53,6 @@
         table {
             display: {{dis}};
         }
-    </style>
+</style>
+
 {% endblock %}

@@ -25,20 +25,24 @@ table, td, th {
 }
 
 table {
-    margin-top: 2%;
+    margin: 3%;
     border-collapse: collapse;
     align-self: center;
-    width: 100%;
+    display: flex;
+    justify-content: center;
 }
 
 th {
     height: 30px;
     color: white;
+    width: 15%;
+    background-color: black; 
 }
 
 td {
     text-align: center;
     padding: 5px;
+    background-color: white;
 }
 
 .form {
