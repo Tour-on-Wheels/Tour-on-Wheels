@@ -70,12 +70,13 @@ def index():
                 ) \
             ORDER BY s1.arrival;" )
         tasks = cursor.fetchall()
+        dis = "block"
         print(len(tasks)) #src, dest, arrival on src, arrival on dest, train_number, train_name
-        return render_template('index.html', tasks = tasks, date = date, src=src, dest=dest, stations = stations)
+        return render_template('index.html', tasks = tasks, date = date, src=src, dest=dest, stations = stations, dis = dis)
     elif(request.method == 'GET'):
     #     tasks = Todo.query.order_by(Todo.date_created).all()
-        
-        return render_template('index.html', stations = stations)
+        dis = 'none'
+        return render_template('index.html', stations = stations, dis=dis)
 
 @app.route('/booking/<string:src>/<string:dest>/<string:train_number>/<string:date>')
 def booking(src, dest, train_number, date):
