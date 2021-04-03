@@ -1,4 +1,4 @@
-DROP INDEX IF EXISTS seat_coach_PNR_constraint;
+DROP VIEW IF EXISTS total_seats_available;
 DROP TABLE IF EXISTS PNR;
 DROP TABLE IF EXISTS schedules;
 DROP TABLE IF EXISTS trains;
@@ -83,6 +83,9 @@ insert into coach values ('S3', 'SL', 71, 'Upper Middle Lower SUpper SLower');
 insert into coach values ('C1', 'CC', 73, 'Aisle Middle Window');
 insert into coach values ('C2', 'CC', 73, 'Aisle Middle Window');
 insert into coach values ('C3', 'CC', 73, 'Aisle Middle Window');
+insert into coach values ('E1', 'EC', 54, 'Aisle Window');
+insert into coach values ('E2', 'EC', 54, 'Aisle Window');
+insert into coach values ('E3', 'EC', 54, 'Aisle Window');
 insert into coach values ('D1', '2S', 73, 'Aisle Middle Window');
 insert into coach values ('D2', '2S', 73, 'Aisle Middle Window');
 insert into coach values ('D3', '2S', 73, 'Aisle Middle Window');
@@ -108,8 +111,18 @@ CREATE TABLE PNR (
 	constraint train_PNR_constraint foreign key (train_number) references trains(number),
 	constraint coach_PNR_constraint foreign key (coach_no) references coach(coach_name),
 	constraint source_PNR_constraint foreign key (source_schedule) references schedules(id),
-	constraint dest_PNR_constraint foreign key (dest_schedule) references schedules(id)
+	constraint dest_PNR_constraint foreign key (dest_schedule) references schedules(id),
+	constraint seat_coach_PNR_constraint unique (train_number, date, coach_no, seat_no)
 );
 
-CREATE index seat_coach_PNR_constraint
-on PNR (train_number, date, coach_no, seat_no);
+CREATE VIEW total_seats_available AS
+SELECT trains.number as train_id, coach.class as class, SUM(coach.total_seats) as seats_available
+FROM trains, coach
+WHERE coach.class = '2S' 
+OR (coach.class = '1AC' AND trains.first_ac = 1)
+OR (coach.class = '2AC' AND trains.second_ac = 1)
+OR (coach.class = '3AC' AND trains.third_ac = 1)
+OR (coach.class = 'SL' AND trains.sleeper = 1)
+OR (coach.class = 'FC' AND trains.first_class = 1)
+OR (coach.class IN ('CC', 'EC') AND trains.chair_car = 1)
+GROUP BY trains.number, coach.class;
