@@ -8,17 +8,18 @@
 <div class="content1">
     <h1 style="text-align: center"> Tour on Wheels</h1>
     <h4>Train Booking</h4>
-    <h4>{{tasks[0][2]}} ({{tasks[0][3]}})</h4>
+    <h4>{{tasks[2]}} ({{tasks[3]}})</h4>
     <h4>{{src}} to {{dest}}</h4>
     <p> Date : {{date}}</p>
     <p>Source : {{src}}</p>
     <p>Destination : {{dest}}</p>
-    <p>Arrival at {{src}} : {{tasks[0][0]}}</p>
-    <p>Departure from {{src}} : {{tasks[0][1]}}</p>
-    <p>Arrival at {{dest}} : {{tasks[0][4]}}</p>
+    <p>Arrival at {{src}} : {{tasks[0]}}</p>
+    <p>Departure from {{src}} : {{tasks[1]}}</p>
+    <p>Arrival at {{dest}} : {{tasks[4]}}</p>
+    <p>Class: {{tasks[5]}}</p>
     </div>
 <div class="form">
-    <form action="/" method="POST">
+    <form action="/info/{{src}}/{{dest}}/{{tasks[3]}}/{{tasks[5]}}/{{date}}" method="POST">
         <p>Name: </p><input type="text" name="name" id="name">
         <p>Age: </p><input type="int" name="age" id="age">
         <p>gender: </p><input list="genlist" type="text" name="gender" id="gender">
@@ -29,7 +30,13 @@
         </datalist>
         <p>Email id: </p><input type="email" name="email" id="email">
         <p>Mobile: </p><input type="tel" name="mobile" id="mobile">
-        <input type="submit" value="Search">
+        <p>Available Seats: </p><input list="myList" type="text" name="pref" id="pref">
+        <datalist id="myList">
+            {% for j in prefered_seats %}
+            <option value="{{j}}">
+            {% endfor %}
+        </datalist>
+        <input type="submit" value="Book Ticket">
         </form>
 
 </div>

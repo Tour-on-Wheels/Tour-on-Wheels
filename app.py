@@ -14,11 +14,19 @@ import numpy as np
 # )
 # cursor = connection.cursor()
 
+# connection = psycopg2.connect(
+#     host = "127.0.0.1",
+#     database = "irctc_db",
+#     user = "krdipen",
+#     password = "password",
+#     port = 5432
+# )
+
 connection = psycopg2.connect(
     host = "127.0.0.1",
-    database = "irctc_db",
-    user = "krdipen",
-    password = "password",
+    database = "railway",
+    user = "postgres",
+    password = "1907",
     port = 5432
 )
 
@@ -105,37 +113,58 @@ FROM schedules AS s1, \
     tasks = cursor.fetchall()
     return render_template('booking.html', tasks = tasks, date=date, src=src, dest=dest)
 
-@app.route('/info/<string:src>/<string:dest>/<string:train_number>/<string:train_class>/<string:date>')
+@app.route('/info/<string:src>/<string:dest>/<string:train_number>/<string:train_class>/<string:date>', methods=['POST', 'GET'])
 def details(src, dest, train_number, train_class, date):
-    cursor.execute(f"SELECT distinct coach_type from coach where class = '{train_class}'")
-    seat_type = cursor.fetchall()[0][0].split()
-    all_types = len(seat_type)
-    print(seat_type)
+    cursor.execute(f"SELECT s1.arrival AS arrival_src, s1.departure AS dept_src, s1.train_name, s1.train_number, s2.arrival AS arrival_dest, ts.class,ts.seats_available - COALESCE(pnr.count, 0) seats \
+        FROM schedules AS s1, \
+            schedules AS s2, \
+            total_seats_available AS ts \
+            LEFT JOIN \
+            ( \
+                SELECT coach.class, PNR.train_number, count(*) FROM PNR, coach \
+                WHERE DATE ='{date}' \
+                AND coach.coach_name = PNR.coach_no \
+                GROUP BY coach.class, PNR.train_number \
+            ) AS pnr \
+            ON (pnr.train_number = ts.train_id \
+                AND pnr.class = ts.class) \
+            WHERE s1.station_name = '{src}' \
+            AND s2.station_name = '{dest}'  \
+            AND s1.train_number = s2.train_number \
+            AND s1.train_number = '{train_number}' \
+            AND ts.train_id = s1.train_number \
+            AND ts.class='{train_class}' \
+            ORDER BY s1.arrival;")
+    tasks = cursor.fetchone()
 
-    return render_template('index.html')
+    if(request.method == 'GET'):
+        cursor.execute(f"SELECT distinct coach_type from coach where class = '{train_class}'")
+        seat_type = cursor.fetchall()[0][0].split()
+        all_types = len(seat_type)
+        cursor.execute(f"SELECT coach_name, total_seats from coach where class = '{train_class}'")
+        all_seats = cursor.fetchall()
+        cursor.execute(f"SELECT PNR.coach_no, PNR.seat_no from PNR, coach where PNR.train_number = '{train_number}' \
+        and coach.class = '{train_class}' and coach.coach_name = PNR.coach_no and PNR.date = '{date}'")
+        filled_seats = cursor.fetchall()
+        empty_seats = []
+        for c, k in all_seats:
+            l = np.arange(1, k+1)
+            for s in l:
+                if (c, s) not in filled_seats:
+                    empty_seats.append((c, s, seat_type[(s-1)%all_types]))
+        return render_template('info.html', tasks = tasks, date=date, src=src, dest=dest, prefered_seats = empty_seats)
 
-    name = request.form['name']
-    age = request.form['age']
-    gender = request.form['gender']
-    email = request.form['email']
-    mobile = request.form['mobile']
-    pref = request.form['preference']
-    pref_index = seat_type.index(pref)
+    elif (request.method == 'POST'):
+        name = request.form['name']
+        age = request.form['age']
+        gender = request.form['gender']
+        email = request.form['email']
+        mobile = request.form['mobile']
+        seat = request.form['pref']
+        # check_email(email)
+        # check_mobile(mobile)
+        return render_template('print.html', name=name, age=age, gender=gender, email=email, mobile=mobile, seat=seat, tasks=tasks, date=date, src=src, dest=dest)
 
-    check_email(email)
-    check_mobile(mobile)
-    cursor.execute(f"SELECT coach_name, total_seats from coach where class = '{train_class}'")
-    all_seats = cursor.fetchall()
-    cursor.execute(f"SELECT PNR.coach_no, PNR.seat_no from PNR, coach where PNR.train_number = '{train_number}' \
-    and coach.class = '{train_class}' and coach.coach_name = PNR.coach_no and PNR.date = '{date}'")
-    filled_seats = cursor.fetchall()
-    empty_seats = []
-    for c, k in all_seats:
-        l = np.arange(1, k+1)
-        for s in l:
-            if (c, s) not in filled_seats: empty_seats.append((c, s))
-    prefered_seats = [(c, s) for (c, s) in empty_seats if (s-1)%all_types==pref_index]
-    
 
 if __name__ == "__main__":
     app.run(debug=True)

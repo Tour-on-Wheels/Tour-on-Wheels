@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title> Tour On Wheels </title>
+{% endblock %}
+
+{% block body %}
+<div class="content2">
+    <h1 style="text-align: center"> Tour on Wheels</h1>
+    <h4>Train Ticket</h4>
+    <h4>{{tasks[2]}} ({{tasks[3]}})</h4>
+    <h4>{{src}} to {{dest}}</h4>
+    <p> Date : {{date}}</p>
+    <p>Source : {{src}}</p>
+    <p>Destination : {{dest}}</p>
+    <p>Arrival at {{src}} : {{tasks[0]}}</p>
+    <p>Departure from {{src}} : {{tasks[1]}}</p>
+    <p>Arrival at {{dest}} : {{tasks[4]}}</p>
+    <p>Class: {{tasks[5]}}</p>
+    </div>
+
+    {% endblock %}
