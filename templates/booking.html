@@ -2,40 +2,30 @@
 
 {% block head %}
 <title> Tour On Wheels </title>
-<link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
 {% endblock %}
 
 {% block body %}
 <div class="content1">
     <h1 style="text-align: center"> Tour on Wheels</h1>
-    <h4>Search Train</h4>
-    <div class='form'>
-        <form action="/" method="POST">
-        <p>Source: </p><input type="text" name="source" id="source">
-        <p>Destination:</p><input type="text" name="destination" id="destination">
-        <input type="submit" value="Search">
-        <!-- <input type="submit" value="Reset"> -->
-        </form>
-    </div>
+    <h4>Train Booking</h4>
+    
     <div class="table">
         <table>
         <tr> 
-            <th>Arrival on {{src}}</th>
+            <th><a href='booking.html'>Arrival on {{src}}</a></th>
             <th>Departure from {{src}}</th>
             <th>Train Name</th>
             <th>Train number</th>
             <th>Arrival on {{dest}}</th>
-            <th>Action</th>
         </tr>
-        {% for task in tasks%} 
-        <tr>
+        {% for task in task%} 
+        <!-- <tr>
             <td>{{task[0]}}</td>
             <td>{{task[1]}}</td>
             <td>{{task[2]}}</td>
             <td>{{task[3]}}</td>
             <td>{{task[4]}}</td>
-            <td><a href="/booking/{{}}">Book Ticket</a></td>
-        </tr>
+        </tr> -->
         {% endfor %}
     </table>
     </div>
