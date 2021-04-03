@@ -27,14 +27,29 @@ app.secret_key=os.urandom(30)
 @app.route('/', methods=['POST', 'GET'])
 def index():
     if(request.method == 'POST'):
-        task_content1 = request.form['source']
-        task_content2 = request.form['destination']
+        src = request.form['source']
+        dest = request.form['destination']
         date = request.form['date']
         print(date)
-        cursor.execute(f"SELECT s1.arrival, s1.departure, s1.train_name, s1.train_number, s2.arrival FROM schedules as s1, schedules as s2 where s1.station_name = '{task_content1}' AND s2.station_name = '{task_content1}' and s1.train_number = s2.train_number ORDER BY s1.arrival;" )
+        cursor.execute(f"SELECT s1.arrival, s1.departure, s1.train_name, s1.train_number, s2.arrival FROM schedules as s1, schedules as s2 where s1.station_name = '{src}' AND s2.station_name = '{dest}' and s1.train_number = s2.train_number ORDER BY s1.arrival;")
+#         cursor.execute(f"SELECT s1.arrival, s1.departure, s1.train_name, s1.train_number, s2.arrival \
+# FROM schedules as s1, \
+#     schedules as s2 \
+# where s1.station_name = '{src}' \
+# AND s2.station_name = '{dest}'  \
+# and s1.train_number = s2.train_number  \
+# AND 0 < ( \
+#         SELECT (select sum(seats_available) from total_seats_available where train_id = s1.train_number) - \
+#         ( \
+#             select count(*) from PNR  \
+#             where date ='{date}' \
+#             AND train_number = s1.train_number \
+#         ) \
+#     ) \
+# ORDER BY s1.arrival;" )
         tasks = cursor.fetchall()
-        print(type(tasks[0])) #src, dest, arrival on src, arrival on dest, train_number, train_name
-        return render_template('index.html', tasks = tasks, date = date, src=task_content1, dest=task_content2)
+        print(len(tasks)) #src, dest, arrival on src, arrival on dest, train_number, train_name
+        return render_template('index.html', tasks = tasks, date = date, src=src, dest=dest)
     elif(request.method == 'GET'):
     #     tasks = Todo.query.order_by(Todo.date_created).all()
         return render_template('index.html')
@@ -44,6 +59,7 @@ def booking(src, dest, train_number, date):
     print(train_number)
     print(src)
     print(dest)
+    list = [()]
     return render_template('booking.html', train_number=train_number, src=src, dest=dest, date=date)
 
 if __name__ == "__main__":
