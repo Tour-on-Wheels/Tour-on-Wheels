@@ -2,21 +2,22 @@
 
 {% block head %}
 <title> Tour On Wheels </title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/booking.css') }}">
 {% endblock %}
 
 {% block body %}
 <div class="content1">
     <h1 style="text-align: center"> Tour on Wheels</h1>
-    <h4>Train Booking</h4>
-    <h4>{{tasks[0][2]}} ({{tasks[0][3]}})</h4>
-    <h4>{{src}} to {{dest}}</h4>
-    <p> Date : {{date}}</p>
-    <p>Source : {{src}}</p>
-    <p>Destination : {{dest}}</p>
-    <p>Arrival at {{src}} : {{tasks[0][0]}}</p>
-    <p>Departure from {{src}} : {{tasks[0][1]}}</p>
-    <p>Arrival at {{dest}} : {{tasks[0][4]}}</p>
-    </div>
+    <div class="info">
+        <h4 style="text-align: center;">Train Booking</h4>
+        <h4>{{tasks[0][2]}} ({{tasks[0][3]}})</h4>
+        <h4>{{src}} to {{dest}}</h4>
+        <p> Date : {{date}}</p>
+        <p>Source : {{src}}</p>
+        <p>Destination : {{dest}}</p>
+        <p>Arrival at {{src}} : {{tasks[0][0]}}</p>
+        <p>Departure from {{src}} : {{tasks[0][1]}}</p>
+        <p>Arrival at {{dest}} : {{tasks[0][4]}}</p>
 <div class="table">
     <table>
         <tr>
@@ -36,6 +37,8 @@
         </tr>
         {% endfor %}
     </table>
-    
+</div>
+</div>
+
 </div>
 {% endblock %}
