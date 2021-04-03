@@ -32,7 +32,7 @@ def check_email(email):
     else:   
         print("Invalid Email")
 
-regex_mobile = '(0/91)?[7-9][0-9]{9}'
+regex_mobile = '(0/91)?[1-9][0-9]{9}'
 def check_mobile(mobile):   
     if(re.search(regex_mobile,mobile)):   
         print("Valid Phone No")   
@@ -104,10 +104,14 @@ FROM schedules AS s1, \
     tasks = cursor.fetchall()
     return render_template('booking.html', tasks = tasks, date=date, src=src, dest=dest)
 
+@app.route('/info/<string:src>/<string:dest>/<string:train_number>/<string:train_class>/<string:date>')
 def details(src, dest, train_number, train_class, date):
     cursor.execute(f"SELECT distinct coach_type from coach where class = '{train_class}'")
     seat_type = cursor.fetchall()[0][0].split()
     all_types = len(seat_type)
+    print(seat_type)
+
+    return render_template('index.html')
 
     name = request.form['name']
     age = request.form['age']

@@ -28,7 +28,11 @@
         <tr>
             <td>{{task[5]}}</td>
             <td>{{task[6]}}</td>
-            <td>Book</td>
+            {% if task[6] != 0 %}
+            <td><a href="/info/{{src}}/{{dest}}/{{tasks[0][3]}}/{{task[5]}}/{{date}}">Book</a></td>
+            {% else %} 
+            <td>No seats remaining</td>
+            {% endif %}
         </tr>
         {% endfor %}
     </table>
