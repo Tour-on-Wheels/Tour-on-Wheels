@@ -25,7 +25,7 @@ for given src, dest, train_number
 
 5. cancel_ticket.html -> PNR no. daalo and cancel ()
 
-6. details.html : (train_number, class) (user inputs multiple: name, age, gender and same mobile, email) -> final.html (tickets)
+6. details.html : (train_number, class) (user inputs multiple: name, age, gender preference and same mobile, email) -> final.html (tickets)
 
 postgresql:
 1. create table (tickets) date, train_id, seats_available, coach_class, 
