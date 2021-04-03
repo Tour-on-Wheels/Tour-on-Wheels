@@ -116,7 +116,7 @@ FROM schedules AS s1, \
 @app.route('/info/<string:src>/<string:dest>/<string:train_number>/<string:train_class>/<string:date>', methods=['POST', 'GET'])
 def details(src, dest, train_number, train_class, date):
     cursor.execute(f"SELECT s1.arrival AS arrival_src, s1.departure AS dept_src, s1.train_name, s1.train_number, s2.arrival AS arrival_dest, ts.class,ts.seats_available - COALESCE(pnr.count, 0) seats \
-        FROM schedules AS s1, \
+            FROM schedules AS s1, \
             schedules AS s2, \
             total_seats_available AS ts \
             LEFT JOIN \

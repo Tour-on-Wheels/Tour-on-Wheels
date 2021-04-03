@@ -5,9 +5,9 @@
 {% endblock %}
 
 {% block body %}
-<div class="content2">
+    <div class="content1">
     <h1 style="text-align: center"> Tour on Wheels</h1>
-    <h4>Train Ticket</h4>
+    <h4>Train Booking</h4>
     <h4>{{tasks[2]}} ({{tasks[3]}})</h4>
     <h4>{{src}} to {{dest}}</h4>
     <p> Date : {{date}}</p>
@@ -17,6 +17,13 @@
     <p>Departure from {{src}} : {{tasks[1]}}</p>
     <p>Arrival at {{dest}} : {{tasks[4]}}</p>
     <p>Class: {{tasks[5]}}</p>
+
+    <p>Name: {{name}}</p>
+    <p>Age: {{age}}</p>
+    <p>Gender: {{gender}}</p>
+    <p>Email: {{email}}</p>
+    <p>Mobile: {{mobile}}</p>
+    <p>Seat: {{seat}}</p>
     </div>
 
-    {% endblock %}
+{% endblock %}
