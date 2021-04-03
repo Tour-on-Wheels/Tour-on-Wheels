@@ -24,16 +24,9 @@
         <input type="submit" value="Search" >
         </form>
     </div>
-    
-    <div class="table">
-    <style>
-        table {
-            display: {{dis}};
-        }
-    </style>
-    
-    <table>
-        <p>Trains on {{date}}</p>
+</div>
+<div class="content2">
+    <table class="table">
         <tr> 
             <th>Arrival on {{src}}</th>
             <th>Departure from {{src}}</th>
@@ -53,6 +46,11 @@
         </tr>
         {% endfor %}
     </table>
-    </div>
-    </div>
+</div>
+
+    <style>
+        table {
+            display: {{dis}};
+        }
+    </style>
 {% endblock %}
