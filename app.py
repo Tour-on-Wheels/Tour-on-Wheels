@@ -16,9 +16,9 @@ import numpy as np
 
 connection = psycopg2.connect(
     host = "127.0.0.1",
-    database = "railway",
-    user = "postgres",
-    password = "1907",
+    database = "irctc_db",
+    user = "krdipen",
+    password = "try@newA1",
     port = 5432
 )
 
@@ -90,7 +90,7 @@ FROM schedules AS s1, \
     ( \
         SELECT coach.class, PNR.train_number, count(*) FROM PNR, coach \
         WHERE DATE ='{date}' \
-        AND coach.class = PNR.coach_no \
+        AND coach.coach_name = PNR.coach_no \
         GROUP BY coach.class, PNR.train_number \
     ) AS pnr \
     ON (pnr.train_number = ts.train_id \
