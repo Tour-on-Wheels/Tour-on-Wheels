@@ -14,7 +14,7 @@
         <p>Source: </p><input list="stations" name="source" id="source">
         <datalist id="stations">
             {% for j in stations %}
-            <option value={{j[0]}}>{{j[0]}}
+            <option value="{{j}}">
             {% endfor %}
           </datalist>
         <p>Date: </p><input type="date" name="date" id="date">

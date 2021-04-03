@@ -28,7 +28,8 @@ app.secret_key=os.urandom(30)
 @app.route('/', methods=['POST', 'GET'])
 def index():
     cursor.execute(f"SELECT name from stations")
-    stations = cursor.fetchall()
+    stations = [i[0] for i in cursor.fetchall()]
+    
     if(request.method == 'POST'):
         
         src = request.form['source']
