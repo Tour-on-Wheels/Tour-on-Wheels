@@ -1,28 +1,28 @@
-from flask import Flask, render_template, url_for, request, redirect
-from flask_sqlalchemy import SQLAlchemy
+from flask import Flask, render_template,request,session,redirect,flash
 from datetime import datetime
-from sqlalchemy import text
+import psycopg2
+import os
+
+# connection = psycopg2.connect(
+#     host = "10.17.50.232",
+#     database = "group_40",
+#     user = "group_40",
+#     password = "CgegedIYggdx1",
+#     port = 5432
+# )
+# cursor = connection.cursor()
+
+connection = psycopg2.connect(
+    host = "127.0.0.1",
+    database = "irctc_db",
+    user = "krdipen",
+    password = "postgres",
+    port = 5432
+)
+cursor = connection.cursor()
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://group_40:CgegedIYggdx1@http://10.17.50.232:5432/group_40'
-db = SQLAlchemy(app)
-
-class schedules(db.Model):
-    arrival = db.Column(db.TIME())
-    day = db.Column(db.Integer)
-    train_name = db.Column(db.String)
-    station_name = db.Column(db.String)
-    id = db.Column(db.Integer, primary_key = True)
-    train_number = db.Column(db.String)
-
-class stations(db.Model):
-    Xcoordinate = db.Column(db.Float)
-    Ycoordinate = db.Column(db.Float)
-    state = db.Column(db.String)
-    code = db.Column(db.String, primary_key = True)
-    name = db.Column(db.String)
-    zone = db.Column(db.String)
-    address = db.Column(db.String)
+app.secret_key=os.urandom(30)
 
 @app.route('/', methods=['POST', 'GET'])
 def index():
@@ -34,7 +34,6 @@ def index():
     elif(request.method == 'GET'):
     #     tasks = Todo.query.order_by(Todo.date_created).all()
         return render_template('index.html')
-
 
 if __name__ == "__main__":
     app.run(debug=True)
