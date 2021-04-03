@@ -18,7 +18,7 @@ connection = psycopg2.connect(
     host = "127.0.0.1",
     database = "irctc_db",
     user = "krdipen",
-    password = "try@newA1",
+    password = "password",
     port = 5432
 )
 
