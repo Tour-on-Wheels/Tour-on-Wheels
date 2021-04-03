@@ -1,0 +1,19 @@
+frontend
+1. index.html : search train : source & dest (station code + name) : trains hyperlink -> booking.html + train_id
+
+2. booking.html : (train_id) trains.csv details  -> final.html
+
+3. PNR_enquiry.html : (input: PNR_no.) -> PNR table se details btayega
+
+4. final.html -> PNR no. and details printable ->
+
+5. cancel_ticket.html -> PNR no. daalo and cancel ()
+
+
+
+postgresql:
+1. create table (tickets) date, train_id, seats_available, coach_class, 
+
+2. create table (PNR) PNR No., date, train_id, coach no., seat_type, name, age, gender, mob. no(nullable), email_id (nullable), source(station_id), destination(station_id)
+
+3. crate table (coach) : coach_name, coach_type, total_seats
