@@ -1,0 +1,49 @@
+body {
+    margin: 0 px;
+    font-family: sans-serif;
+    background-color: rgba(27, 27, 27, 0.795);
+}
+
+
+
+.content1 {
+    margin: 0 auto;
+    height: 720px;
+    background-image: url('indian-2405928_1920.jpg');
+    background-position: center; /* Center the image */
+    background-repeat: no-repeat; /* Do not repeat the image */
+    background-size: cover; 
+    position: relative;
+}
+
+.info {
+    margin: auto;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 70%;
+  position: absolute;
+  width: 40%;
+    padding-left: 3.5%;
+    padding-right: 3.5%;
+    padding-bottom: 3.5%;
+    padding-top: 1.5%;
+    box-shadow:0 0 20px rgba(0,0,0,0.8);
+    border-radius: 5px;
+    position: absolute;
+    background-color: white;
+}
+table{
+    width: 100%;
+}
+th {
+    height: 30px;
+    color: white;
+    width: 35%;
+    background-color: black;  
+}
+td{
+    text-align: center;
+    height: 30px;
+}
