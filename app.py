@@ -44,7 +44,6 @@ def booking(src, dest, train_number, date):
     print(train_number)
     print(src)
     print(dest)
-    dd
     return render_template('booking.html', train_number=train_number, src=src, dest=dest, date=date)
 
 if __name__ == "__main__":
