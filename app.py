@@ -2,6 +2,8 @@ from flask import Flask, render_template,request,session,redirect,flash
 from datetime import datetime
 import psycopg2
 import os
+import re
+import numpy as np
 
 # connection = psycopg2.connect(
 #     host = "10.17.50.232",
@@ -21,6 +23,21 @@ connection = psycopg2.connect(
 )
 
 cursor = connection.cursor()
+
+regex_email = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
+def check_email(email):   
+  
+    if(re.search(regex_email,email)):   
+        print("Valid Email")   
+    else:   
+        print("Invalid Email")
+
+regex_mobile = '(0/91)?[7-9][0-9]{9}'
+def check_mobile(mobile):   
+    if(re.search(regex_mobile,mobile)):   
+        print("Valid Phone No")   
+    else:   
+        print("Invalid Phone No")
 
 app = Flask(__name__)
 app.secret_key=os.urandom(30)
@@ -67,6 +84,34 @@ def booking(src, dest, train_number, date):
     print(dest)
     list = [()]
     return render_template('booking.html', train_number=train_number, src=src, dest=dest, date=date)
+
+def details(src, dest, train_number, train_class, date):
+    cursor.execute(f"SELECT distinct coach_type from coach where class = '{train_class}'")
+    seat_type = cursor.fetchall()[0][0].split()
+    all_types = len(seat_type)
+
+    name = request.form['name']
+    age = request.form['age']
+    gender = request.form['gender']
+    email = request.form['email']
+    mobile = request.form['mobile']
+    pref = request.form['preference']
+    pref_index = seat_type.index(pref)
+
+    check_email(email)
+    check_mobile(mobile)
+    cursor.execute(f"SELECT coach_name, total_seats from coach where class = '{train_class}'")
+    all_seats = cursor.fetchall()
+    cursor.execute(f"SELECT PNR.coach_no, PNR.seat_no from PNR, coach where PNR.train_number = '{train_number}' \
+    and coach.class = '{train_class}' and coach.coach_name = PNR.coach_no and PNR.date = '{date}'")
+    filled_seats = cursor.fetchall()
+    empty_seats = []
+    for c, k in all_seats:
+        l = np.arange(1, k+1)
+        for s in l:
+            if (c, s) not in filled_seats: empty_seats.append((c, s))
+    prefered_seats = [(c, s) for (c, s) in empty_seats if (s-1)%all_types==pref_index]
+    
 
 if __name__ == "__main__":
     app.run(debug=True)
