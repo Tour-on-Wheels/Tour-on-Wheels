@@ -12,11 +12,12 @@
     <div class='form'>
         <form action="/" method="POST">
         <p>Source: </p><input type="text" name="source" id="source">
+        <p>Date: </p><input type="date" name="date" id="date">
         <p>Destination:</p><input type="text" name="destination" id="destination">
         <input type="submit" value="Search">
-        <!-- <input type="submit" value="Reset"> -->
         </form>
     </div>
+    <p>Trains on {{date}}</p>
     <div class="table">
         <table>
         <tr> 
@@ -34,7 +35,7 @@
             <td>{{task[2]}}</td>
             <td>{{task[3]}}</td>
             <td>{{task[4]}}</td>
-            <td><a href="/booking/{{task, src, dest}}">Check Availability</a></td>
+            <td><a href="/booking/{{src}}/{{dest}}/{{task[3]}}/{{date}}">Check Availability</a></td>
         </tr>
         {% endfor %}
     </table>

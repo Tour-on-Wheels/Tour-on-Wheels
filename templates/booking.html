@@ -8,26 +8,7 @@
 <div class="content1">
     <h1 style="text-align: center"> Tour on Wheels</h1>
     <h4>Train Booking</h4>
-    
-    <div class="table">
-        <table>
-        <tr> 
-            <th><a href='booking.html'>Arrival on {{src}}</a></th>
-            <th>Departure from {{src}}</th>
-            <th>Train Name</th>
-            <th>Train number</th>
-            <th>Arrival on {{dest}}</th>
-        </tr>
-        {% for task in task%} 
-        <!-- <tr>
-            <td>{{task[0]}}</td>
-            <td>{{task[1]}}</td>
-            <td>{{task[2]}}</td>
-            <td>{{task[3]}}</td>
-            <td>{{task[4]}}</td>
-        </tr> -->
-        {% endfor %}
-    </table>
-    </div>
+    <p>Source : {{train_number}}</p>
+    <p>Destination : {{task}}</p>
     </div>
 {% endblock %}

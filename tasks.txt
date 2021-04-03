@@ -6,6 +6,18 @@ outputs: required
 
 
 2. booking.html : (train_id) trains.csv details  -> final.html
+Requirement:
+for given src, dest, train_number 
+    we need the following 
+    src,
+    dest, 
+    arrival on src
+    departure from src
+    arrival on dest
+    train_number
+    train_name
+    all classes with available seats for each class
+
 
 3. PNR_enquiry.html : (input: PNR_no.) -> PNR table se details btayega
 
