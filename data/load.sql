@@ -94,7 +94,7 @@ insert into coach values ('F2', 'FC', 26, 'Upper Lower');
 insert into coach values ('F3', 'FC', 26, 'Upper Lower');
 
 CREATE TABLE PNR (
-	PNR_no text primary key,
+	PNR_no text ,
 	train_number text not null,
 	date date not null,
 	coach_no text not null,
@@ -112,7 +112,7 @@ CREATE TABLE PNR (
 	constraint coach_PNR_constraint foreign key (coach_no) references coach(coach_name),
 	constraint source_PNR_constraint foreign key (source_schedule) references schedules(id),
 	constraint dest_PNR_constraint foreign key (dest_schedule) references schedules(id),
-	constraint seat_coach_PNR_constraint unique (train_number, date, coach_no, seat_no)
+	constraint seat_coach_PNR_constraint primary key (train_number, date, coach_no, seat_no)
 );
 
 CREATE VIEW total_seats_available AS

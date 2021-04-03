@@ -13,12 +13,13 @@ import os
 # cursor = connection.cursor()
 
 connection = psycopg2.connect(
-    host = "localhost",
+    host = "127.0.0.1",
     database = "railway",
-    user = "postgres",
-    password = "1907",
+    user = "sanjaliagrawal",
+    password = "ALOHOMORA",
     port = 5432
 )
+
 cursor = connection.cursor()
 
 app = Flask(__name__)
@@ -26,33 +27,37 @@ app.secret_key=os.urandom(30)
 
 @app.route('/', methods=['POST', 'GET'])
 def index():
+    cursor.execute(f"SELECT name from stations")
+    stations = cursor.fetchall()
     if(request.method == 'POST'):
+        
         src = request.form['source']
         dest = request.form['destination']
         date = request.form['date']
         print(date)
-        cursor.execute(f"SELECT s1.arrival, s1.departure, s1.train_name, s1.train_number, s2.arrival FROM schedules as s1, schedules as s2 where s1.station_name = '{src}' AND s2.station_name = '{dest}' and s1.train_number = s2.train_number ORDER BY s1.arrival;")
-#         cursor.execute(f"SELECT s1.arrival, s1.departure, s1.train_name, s1.train_number, s2.arrival \
-# FROM schedules as s1, \
-#     schedules as s2 \
-# where s1.station_name = '{src}' \
-# AND s2.station_name = '{dest}'  \
-# and s1.train_number = s2.train_number  \
-# AND 0 < ( \
-#         SELECT (select sum(seats_available) from total_seats_available where train_id = s1.train_number) - \
-#         ( \
-#             select count(*) from PNR  \
-#             where date ='{date}' \
-#             AND train_number = s1.train_number \
-#         ) \
-#     ) \
-# ORDER BY s1.arrival;" )
+        # cursor.execute(f"SELECT s1.arrival, s1.departure, s1.train_name, s1.train_number, s2.arrival FROM schedules as s1, schedules as s2 where s1.station_name = '{src}' AND s2.station_name = '{dest}' and s1.train_number = s2.train_number ORDER BY s1.arrival;")
+        cursor.execute(f"SELECT s1.arrival, s1.departure, s1.train_name, s1.train_number, s2.arrival \
+            FROM schedules as s1, \
+                schedules as s2 \
+            where s1.station_name = '{src}' \
+            AND s2.station_name = '{dest}'  \
+            and s1.train_number = s2.train_number  \
+            AND 0 < ( \
+                    SELECT (select sum(seats_available) from total_seats_available where train_id = s1.train_number) - \
+                    ( \
+                        select count(*) from PNR  \
+                        where date ='{date}' \
+                        AND train_number = s1.train_number \
+                    ) \
+                ) \
+            ORDER BY s1.arrival;" )
         tasks = cursor.fetchall()
         print(len(tasks)) #src, dest, arrival on src, arrival on dest, train_number, train_name
-        return render_template('index.html', tasks = tasks, date = date, src=src, dest=dest)
+        return render_template('index.html', tasks = tasks, date = date, src=src, dest=dest, stations = stations)
     elif(request.method == 'GET'):
     #     tasks = Todo.query.order_by(Todo.date_created).all()
-        return render_template('index.html')
+        
+        return render_template('index.html', stations = stations)
 
 @app.route('/booking/<string:src>/<string:dest>/<string:train_number>/<string:date>')
 def booking(src, dest, train_number, date):
