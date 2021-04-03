@@ -17,8 +17,8 @@ import numpy as np
 connection = psycopg2.connect(
     host = "127.0.0.1",
     database = "railway",
-    user = "sanjaliagrawal",
-    password = "ALOHOMORA",
+    user = "postgres",
+    password = "1907",
     port = 5432
 )
 
@@ -82,8 +82,27 @@ def booking(src, dest, train_number, date):
     print(train_number)
     print(src)
     print(dest)
-    list = [()]
-    return render_template('booking.html', train_number=train_number, src=src, dest=dest, date=date)
+    cursor.execute(f"SELECT s1.arrival AS arrival_src, s1.departure AS dept_src, s1.train_name, s1.train_number, s2.arrival AS arrival_dest, ts.class,ts.seats_available - COALESCE(pnr.count, 0) seats \
+FROM schedules AS s1, \
+    schedules AS s2, \
+    total_seats_available AS ts \
+    LEFT JOIN \
+    ( \
+        SELECT coach.class, PNR.train_number, count(*) FROM PNR, coach \
+        WHERE DATE ='{date}' \
+        AND coach.class = PNR.coach_no \
+        GROUP BY coach.class, PNR.train_number \
+    ) AS pnr \
+    ON (pnr.train_number = ts.train_id \
+        AND pnr.class = ts.class) \
+    WHERE s1.station_name = '{src}' \
+    AND s2.station_name = '{dest}'  \
+    AND s1.train_number = s2.train_number \
+    AND s1.train_number = '{train_number}' \
+    AND ts.train_id = s1.train_number \
+    ORDER BY s1.arrival;") 
+    tasks = cursor.fetchall()
+    return render_template('booking.html', tasks = tasks, date=date, src=src, dest=dest)
 
 def details(src, dest, train_number, train_class, date):
     cursor.execute(f"SELECT distinct coach_type from coach where class = '{train_class}'")
