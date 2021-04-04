@@ -157,18 +157,22 @@ def details(src, dest, train_number, train_class, date):
         seat = request.form.getlist('pref')
         seat_list = [i.split() for i in seat]
         
-        for i in range(len(name)):
-            cursor.execute(f"SELECT pnr_no FROM pnr GROUP BY pnr_no ORDER BY pnr_no DESC LIMIT 1;")
-            pnr_number = cursor.fetchone()[0]
-            print("\n\n\n\n\n\n")
-            print(pnr_number)
-            print(type(pnr_number))
-            pnr_number = str(int(pnr_number)+1)
-            while len(pnr_number) < 10:
-                pnr_number = "0"+pnr_number
-            print(f"INSERT INTO pnr VALUES ('{pnr_number}', '{train_number}', '{date}', '{seat_list[i][0]}', {seat_list[i][1]}, '{seat_list[i][2]}', '{name[i]}', {age[i]}, '{gender[i]}', '{mobile[i]}', '{email[i]}', '{src}', '{dest}', 0);")
-            cursor.execute(f"INSERT INTO pnr VALUES ('{pnr_number}', '{train_number}', '{date}', '{seat_list[i][0]}', {seat_list[i][1]}, '{seat_list[i][2]}', '{name[i]}', {age[i]}, '{gender[i]}', '{mobile[i]}', '{email[i]}', '{src}', '{dest}', 0);")
-            connection.commit()
+        try:
+            for i in range(len(name)):
+                cursor.execute(f"SELECT pnr_no FROM pnr GROUP BY pnr_no ORDER BY pnr_no DESC LIMIT 1;")
+                pnr_number = cursor.fetchone()[0]
+                print("\n\n\n\n\n\n")
+                print(pnr_number)
+                print(type(pnr_number))
+                pnr_number = str(int(pnr_number)+1)
+                while len(pnr_number) < 10:
+                    pnr_number = "0"+pnr_number
+                print(f"INSERT INTO pnr VALUES ('{pnr_number}', '{train_number}', '{date}', '{seat_list[i][0]}', {seat_list[i][1]}, '{seat_list[i][2]}', '{name[i]}', {age[i]}, '{gender[i]}', '{mobile[i]}', '{email[i]}', '{src}', '{dest}', 0);")
+                cursor.execute(f"INSERT INTO pnr VALUES ('{pnr_number}', '{train_number}', '{date}', '{seat_list[i][0]}', {seat_list[i][1]}, '{seat_list[i][2]}', '{name[i]}', {age[i]}, '{gender[i]}', '{mobile[i]}', '{email[i]}', '{src}', '{dest}', 0);")
+        except:
+            connection.rollback()
+            return redirect(f'/info/{src}/{dest}/{tasks[3]}/{tasks[5]}/{date}')
+        connection.commit()
         return render_template('print.html', name=name, age=age, gender=gender, email=email, mobile=mobile, seat=seat, pnr_number=pnr_number, tasks=tasks, date=date, src=src, dest=dest)
 
 
