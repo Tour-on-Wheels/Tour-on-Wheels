@@ -2,44 +2,67 @@
 
 {% block head %}
 <title> Tour On Wheels </title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/info.css') }}">
 {% endblock %}
 
 {% block body %}
 <div class="content1">
-    <h1 style="text-align: center"> Tour on Wheels</h1>
-    <h4>Train Booking</h4>
-    <h4>{{tasks[2]}} ({{tasks[3]}})</h4>
-    <h4>{{src}} to {{dest}}</h4>
-    <p> Date : {{date}}</p>
-    <p>Source : {{src}}</p>
-    <p>Destination : {{dest}}</p>
-    <p>Arrival Time on {{src}} : {{tasks[0]}}</p>
-    <p>Departure Time from {{src}} : {{tasks[1]}}</p>
-    <p>Arrival Time on {{dest}} : {{tasks[4]}}</p>
-    <p>Arrival Date on {{dest}} : {{tasks[7]}}</p>
-    <p>Class: {{tasks[5]}}</p>
+    <h1 style="text-align: center; font-size: x-large; font-family: 'Brush Script MT', cursive;"><br>Indian Railways</h1>
+    <h1 style="text-align: center; font-size: xx-large;">TOUR ON WHEELS</h1>
+    <div class="info">
+        <h4 style="text-align: center; font-size: xx-large; font-family: Copperplate, Papyrus, fantasy; color: blue; line-height: 5%;">Train Booking</h4>
+    
+    <div class="content">
+        <div class="train" style="margin-left: 5%;">
+        
+        <h3>{{src}} to {{dest}}</h3>
+        <h3 style="font-size: xxx-large; line-height: 1%;"> {{tasks[3]}}</h3>
+        <h5>{{tasks[2]}}</h5>
     </div>
+        <div style="margin-left: 15%;" class="times">
+            <p><b>Arrival at {{src}}</b> : <br>{{date}} -> {{tasks[0]}}</p>
+        <p><b>Departure from {{src}}</b> : <br>{{tasks[1]}}</p>
+        <p><b>Arrival at {{dest}}</b> : <br> {{tasks[7]}} -> {{tasks[4]}}</p>
+        </div>
+        </div>
+        <h4 style="line-height: 5%;">Class: <span style="color: blue;">{{tasks[5]}}</span></h4>
 <div class="form">
     <form action="/info/{{src}}/{{dest}}/{{tasks[3]}}/{{tasks[5]}}/{{date}}" method="POST">
-        <p>Name: </p><input type="text" name="name" id="name">
-        <p>Age: </p><input type="int" name="age" id="age">
-        <p>gender: </p><input list="genlist" type="text" name="gender" id="gender">
-        <datalist id="genlist">
-            <option value="Male">
-            <option value="Female">
-            <option value="Prefer not to say">
-        </datalist>
-        <p>Email id: </p><input type="email" name="email" id="email">
-        <p>Mobile: </p><input type="tel" name="mobile" id="mobile">
-        <p>Available Seats: </p><input list="myList" type="text" name="pref" id="pref">
-        <datalist id="myList">
-            {% for j in prefered_seats %}
-            <option value="{{j}}">
-            {% endfor %}
-        </datalist>
-        <input type="submit" value="Book Ticket">
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Age</th>
+                <th>Gender</th>
+                <th>Email</th>
+                <th>Mobile</th>
+                <th>Seat</th>
+            </tr>
+            <tr>
+                <td><input class="inp" type="text" name="name" id="name"></td>
+                <td><input class="inp" type="int" name="age" id="age"></td>
+                <td><input class="inp" list="genlist" type="text" name="gender" id="gender"></td>
+                <td><input class="inp" type="email" name="email" id="email"></td>
+                <td><input class="inp" type="tel" name="mobile" id="mobile"></td>
+                <td><input class="inp" list="myList" type="text" name="pref" id="pref"></td>
+            </tr>
+        </table>
+        <br><br>
+        <input class="submit" type="submit" value="Book Ticket">
         </form>
+    </div>
+</div>
 
 </div>
+
+<datalist id="genlist">
+    <option value="Male">
+    <option value="Female">
+    <option value="Prefer not to say">
+</datalist>
+<datalist id="myList">
+    {% for j in prefered_seats %}
+    <option value="{{j}}">
+    {% endfor %}
+</datalist>
 
     {% endblock %}
