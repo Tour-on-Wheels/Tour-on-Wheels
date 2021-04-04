@@ -2,10 +2,11 @@
 
 {% block head %}
 <title> Tour On Wheels </title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/print.css') }}">
 {% endblock %}
 
 {% block body %}
-    <div class="content1">
+<div class="content1">
     <h1 style="text-align: center"> Tour on Wheels</h1>
     <h4>Train Booking</h4>
     <h4>{{tasks[2]}} ({{tasks[3]}})</h4>
@@ -26,6 +27,6 @@
     <p>Mobile: {{mobile}}</p>
     <p>Seat: {{seat}}</p>
     <p>PNR Number: {{pnr_number}}</p>
-    </div>
+</div>
 
 {% endblock %}

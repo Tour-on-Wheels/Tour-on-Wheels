@@ -4,21 +4,14 @@ import os
 import re
 import numpy as np
 
-# connection = psycopg2.connect(
-#     host = "10.17.50.232",
-#     database = "group_40",
-#     user = "group_40",
-#     password = "CgegedIYggdx1",
-#     port = 5432
-# )
-
 connection = psycopg2.connect(
-    host = "127.0.0.1",
-    database = "railway",
-    user = "sanjaliagrawal",
-    password = "ALOHOMORA",
+    host = "10.17.50.232",
+    database = "group_40",
+    user = "group_40",
+    password = "CgegedIYggdx1",
     port = 5432
 )
+
 
 
 cursor = connection.cursor()
@@ -190,6 +183,10 @@ def enquiry():
         train_number = val[11]
         return render_template('print.html', name=val[0], age=val[1], gender=val[2], email=val[3], mobile=val[4], seat=(val[6], val[5], val[7]), pnr_number=pnr, date=val[8], src=val[9], dest=val[10], status=val[11])
 
-
+@app.route('/cancel', methods=['POST', 'GET'])
+def cancel():
+    if(request.method == 'GET'):
+        return render_template('cancel.html')
+        
 if __name__ == "__main__":
     app.run(host="localhost", port=5040, debug=True)

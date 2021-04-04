@@ -1,0 +1,39 @@
+body{
+    margin: 0 px;
+    font-family: sans-serif;
+    background-color: #222a3f;
+}
+h1{
+    color: white;
+    line-height: 45%;
+    text-shadow: 0 0 30px rgba(5, 16, 78, 0.8);
+    text-align: center;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+.content1 {
+    margin: 0 auto;
+    height: 770px;
+    background: linear-gradient(
+    to top,
+    rgba(0,0,0, 0),
+    #222a3fad
+  ),url(central-station-1527780_1920.jpg);
+    background-position: center; /* Center the image */
+    background-repeat: no-repeat; /* Do not repeat the image */
+    background-size: cover; 
+    position: relative;
+}
+
+.pnr {
+    box-shadow:0 0 20px rgba(0,0,0,0.8);
+    margin-left: 8%;
+    margin-top: 10%;
+    padding-top: 1%;
+    padding-left: 3.5%;
+    padding-right: 2%;
+    padding-bottom: 3.5%;
+    width: fit-content;
+    height: fit-content;
+    border-radius: 5px;
+    background-color: white;
+}
