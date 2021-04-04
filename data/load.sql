@@ -110,7 +110,7 @@ CREATE TABLE PNR (
 	delete int default 0,
 	constraint train_PNR_constraint foreign key (train_number) references trains(number),
 	constraint coach_PNR_constraint foreign key (coach_no) references coach(coach_name),
-	constraint seat_coach_PNR_constraint primary key (train_number, date, coach_no, seat_no)
+	constraint seat_coach_PNR_constraint primary key (train_number, date, coach_no, seat_no, delete)
 );
 
 insert into PNR values ('0000000000', '12547', '2020-01-01', 'H1', 0, '0', '0', 0, '0', '0', '0', '0', '0', 1);

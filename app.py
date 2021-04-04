@@ -211,6 +211,44 @@ def enquiry():
 def cancel():
     if(request.method == 'GET'):
         return render_template('cancel.html')
+    elif (request.method == 'POST'):
+        pnr = request.form['pnr']
+        cursor.execute(f"UPDATE pnr SET delete = 1 WHERE pnr_no = '{pnr}';")
+        connection.commit()
+        cursor.execute(f"SELECT pnr.pnr_no, pnr.name, pnr.age::varchar(10), pnr.gender, pnr.email, pnr.mobile, CONCAT(pnr.coach_no,' ',pnr.seat_no::varchar(10),' ',pnr.birth_type) AS seat, pnr.src, pnr.dest, pnr.train_number, coach.class AS train_class, pnr.date, pnr.delete AS status \
+                        FROM pnr \
+                        JOIN coach \
+                            ON pnr.coach_no = coach.coach_name \
+                        WHERE pnr.pnr_no = '{pnr}' \
+                        ORDER BY pnr.name;")
+        persons = cursor.fetchall()
+        vals = [(person[1],person[2],person[3],person[4],person[5],person[6].split()) for person in persons]
+        print(vals)
+        cursor.execute(f"SELECT s1.arrival AS arrival_src, s1.departure AS dept_src, s1.train_name, s1.train_number, s2.arrival AS arrival_dest, ts.class,ts.seats_available - COALESCE(pnr.count, 0) seats, TO_DATE('{persons[0][11]}','YYYY-MM-DD') + s2.day - s1.day AS arrival_date \
+            FROM schedules AS s1, \
+            schedules AS s2, \
+            total_seats_available AS ts \
+            LEFT JOIN \
+            ( \
+                SELECT coach.class, PNR.train_number, count(*) FROM PNR, coach \
+                WHERE DATE ='{persons[0][11]}' \
+                AND coach.coach_name = PNR.coach_no \
+                AND PNR.delete = 0 \
+                GROUP BY coach.class, PNR.train_number \
+            ) AS pnr \
+            ON (pnr.train_number = ts.train_id \
+                AND pnr.class = ts.class) \
+            WHERE s1.station_name = '{persons[0][7]}' \
+            AND s2.station_name = '{persons[0][8]}'  \
+            AND s1.train_number = s2.train_number \
+            AND (s2.day > s1.day OR (s2.day = s1.day AND s2.arrival >= s1.departure)) \
+            AND s1.train_number = '{persons[0][9]}' \
+            AND ts.train_id = s1.train_number \
+            AND ts.class='{persons[0][10]}' \
+            ORDER BY s1.arrival;")
+        tasks = cursor.fetchone()
+        print(tasks)
+        return render_template('print.html', vals=vals, pnr_number=persons[0][0], tasks=tasks, date=persons[0][11], src=persons[0][7], dest=persons[0][8], status="Cancelled")
         
 if __name__ == "__main__":
     app.run(host="localhost", port=5040, debug=True)
