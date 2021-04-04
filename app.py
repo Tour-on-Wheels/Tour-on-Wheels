@@ -161,7 +161,7 @@ def details(src, dest, train_number, train_class, date, status):
             connection.rollback()
             return redirect(f'/info/{src}/{dest}/{tasks[3]}/{tasks[5]}/{date}/error')
         connection.commit()
-        vals = [k for k in zip(name, age, gender, email, mobile, seat)]
+        vals = [k for k in zip(name, age, gender, email, mobile, seat_list)]
         print(vals)
         return render_template('print.html', vals=vals, pnr_number=pnr_number, tasks=tasks, date=date, src=src, dest=dest, status="Booked")
 
@@ -178,7 +178,7 @@ def enquiry():
                         WHERE pnr.pnr_no = '{pnr}' \
                         ORDER BY pnr.name;")
         persons = cursor.fetchall()
-        vals = [(person[1],person[2],person[3],person[4],person[5],person[6]) for person in persons]
+        vals = [(person[1],person[2],person[3],person[4],person[5],person[6].split()) for person in persons]
         print(vals)
         cursor.execute(f"SELECT s1.arrival AS arrival_src, s1.departure AS dept_src, s1.train_name, s1.train_number, s2.arrival AS arrival_dest, ts.class,ts.seats_available - COALESCE(pnr.count, 0) seats, TO_DATE('{persons[0][11]}','YYYY-MM-DD') + s2.day - s1.day AS arrival_date \
             FROM schedules AS s1, \
@@ -206,7 +206,6 @@ def enquiry():
         print(tasks)
         status = 'Booked' if persons[0][12] == 0 else 'Cancelled'
         return render_template('print.html', vals=vals, pnr_number=persons[0][0], tasks=tasks, date=persons[0][11], src=persons[0][7], dest=persons[0][8], status=status)
-
 
 @app.route('/cancel', methods=['POST', 'GET'])
 def cancel():
