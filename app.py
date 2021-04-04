@@ -105,8 +105,8 @@ def booking(src, dest, train_number, date):
     tasks = cursor.fetchall()
     return render_template('booking.html', tasks = tasks, date=date, src=src, dest=dest)
 
-@app.route('/info/<string:src>/<string:dest>/<string:train_number>/<string:train_class>/<string:date>', methods=['POST', 'GET'])
-def details(src, dest, train_number, train_class, date):
+@app.route('/info/<string:src>/<string:dest>/<string:train_number>/<string:train_class>/<string:date>/<string:status>', methods=['POST', 'GET'])
+def details(src, dest, train_number, train_class, date, status):
     cursor.execute(f"SELECT s1.arrival AS arrival_src, s1.departure AS dept_src, s1.train_name, s1.train_number, s2.arrival AS arrival_dest, ts.class,ts.seats_available - COALESCE(pnr.count, 0) seats, TO_DATE('{date}','YYYY-MM-DD') + s2.day - s1.day AS arrival_date \
             FROM schedules AS s1, \
             schedules AS s2, \
@@ -146,7 +146,7 @@ def details(src, dest, train_number, train_class, date):
             for s in l:
                 if (c, s) not in filled_seats:
                     empty_seats.append((c, s, seat_type[(s-1)%all_types]))
-        return render_template('info.html', tasks = tasks, date=date, src=src, dest=dest, prefered_seats = empty_seats)
+        return render_template('info.html', tasks = tasks, date=date, src=src, dest=dest, prefered_seats = empty_seats, status=staus)
 
     elif (request.method == 'POST'):
         name = request.form.getlist('name')
@@ -171,7 +171,7 @@ def details(src, dest, train_number, train_class, date):
                 cursor.execute(f"INSERT INTO pnr VALUES ('{pnr_number}', '{train_number}', '{date}', '{seat_list[i][0]}', {seat_list[i][1]}, '{seat_list[i][2]}', '{name[i]}', {age[i]}, '{gender[i]}', '{mobile[i]}', '{email[i]}', '{src}', '{dest}', 0);")
         except:
             connection.rollback()
-            return redirect(f'/info/{src}/{dest}/{tasks[3]}/{tasks[5]}/{date}')
+            return redirect(f'/info/{src}/{dest}/{tasks[3]}/{tasks[5]}/{date}/error')
         connection.commit()
         return render_template('print.html', name=name, age=age, gender=gender, email=email, mobile=mobile, seat=seat, pnr_number=pnr_number, tasks=tasks, date=date, src=src, dest=dest)
 
