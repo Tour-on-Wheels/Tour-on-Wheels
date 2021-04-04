@@ -14,13 +14,12 @@
     <div class="info">
         <h4 style="text-align: center; font-size: xx-large; font-family: Copperplate, Papyrus, fantasy; color: blue; line-height: 5%;">PNR NO: {{pnr_number}}</h4> 
     <div class="content">
-        <div class="train" style="margin-left: 10%;">
+        <div class="train" >
         <h3>{{src}} to {{dest}}</h3>
         <h3 style="font-size: xxx-large; line-height: 1%;"> {{tasks[3]}}</h3>
         <h5>{{tasks[2]}}</h5>
 
         <h4 style="line-height: 5%; ">Class: <span style="color: blue;">{{tasks[5]}}</span></h4>
-        <h4 style="line-height: 5%; ">Status: <span style="color: blue;">{{status}}</span></h4>
     </div>
         <div style="margin-left: 10%;" class="times">
             <p><b>Arrival at {{src}}</b> : <br>{{date}} -> {{tasks[0]}}</p>
@@ -39,6 +38,7 @@
                 <th>Coach</th>
                 <th>Seat</th>
                 <th>Birth Type</th>
+                <th>Status</th>
             </tr>
             {% for task in vals%} 
             <tr>
@@ -50,6 +50,7 @@
                 <td>{{task[5][0]}}</td>
                 <td>{{task[5][1]}}</td>
                 <td>{{task[5][2]}}</td>
+                <td>{{task[6]}}</td>
             </tr>
             {% endfor %}
         </table>

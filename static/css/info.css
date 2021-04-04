@@ -48,6 +48,7 @@ h1{
 .content {
 
     display: flex;
+    justify-content: center;
 }
 
 h4{

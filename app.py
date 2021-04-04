@@ -13,12 +13,13 @@ import numpy as np
 # )
 
 connection = psycopg2.connect(
-    host = "localhost",
-    database = "irctc_db",
-    user = "krdipen",
-    password = "password",
+    host = "127.0.0.1",
+    database = "railway",
+    user = "sanjaliagrawal",
+    password = "ALOHOMORA",
     port = 5432
 )
+
 
 cursor = connection.cursor()
 
@@ -169,9 +170,9 @@ def details(src, dest, train_number, train_class, date, status):
             connection.rollback()
             return redirect(f'/info/{src}/{dest}/{tasks[3]}/{tasks[5]}/{date}/error')
         connection.commit()
-        vals = [k for k in zip(name, age, gender, email, mobile, seat_list)]
+        vals = [(n, a, g, e, m, s, 'Booked') for (n, a, g, e, m, s) in zip(name, age, gender, email, mobile, seat_list)]
         print(vals)
-        return render_template('print.html', vals=vals, pnr_number=pnr_number, tasks=tasks, date=date, src=src, dest=dest, status="Booked")
+        return render_template('print.html', vals=vals, pnr_number=pnr_number, tasks=tasks, date=date, src=src, dest=dest)
 
 @app.route('/enquiry', methods=['POST', 'GET'])
 def enquiry():
@@ -186,7 +187,8 @@ def enquiry():
                         WHERE pnr.pnr_no = '{pnr}' \
                         ORDER BY pnr.name;")
         persons = cursor.fetchall()
-        vals = [(person[1],person[2],person[3],person[4],person[5],person[6].split()) for person in persons]
+        status = ['Booked' if person[12] == 0 else 'Cancelled' for person in persons]
+        vals = [(person[1],person[2],person[3],person[4],person[5],person[6].split(), st) for (person, st) in zip(persons, status)]
         print(vals)
         try:
             cursor.execute(f"SELECT s1.arrival AS arrival_src, s1.departure AS dept_src, s1.train_name, s1.train_number, s2.arrival AS arrival_dest, ts.class,ts.seats_available - COALESCE(pnr.count, 0) seats, TO_DATE('{persons[0][11]}','YYYY-MM-DD') + s2.day - s1.day AS arrival_date \
@@ -215,7 +217,6 @@ def enquiry():
         except:
             return render_template('enquiry.html', status="error")
         print(tasks)
-        status = 'Booked' if persons[0][12] == 0 else 'Cancelled'
         return render_template('print.html', vals=vals, pnr_number=persons[0][0], tasks=tasks, date=persons[0][11], src=persons[0][7], dest=persons[0][8], status=status)
 
 @app.route('/cancel', methods=['POST', 'GET'])
@@ -224,7 +225,8 @@ def cancel():
         return render_template('cancel.html', status="true")
     elif (request.method == 'POST'):
         pnr = request.form['pnr']
-        cursor.execute(f"UPDATE pnr SET delete = 1 WHERE pnr_no = '{pnr}';")
+        name = request.form['name']
+        cursor.execute(f"UPDATE pnr SET delete = 1 WHERE pnr_no = '{pnr}' AND name = '{name}';")
         connection.commit()
         cursor.execute(f"SELECT pnr.pnr_no, pnr.name, pnr.age::varchar(10), pnr.gender, pnr.email, pnr.mobile, CONCAT(pnr.coach_no,' ',pnr.seat_no::varchar(10),' ',pnr.birth_type) AS seat, pnr.src, pnr.dest, pnr.train_number, coach.class AS train_class, pnr.date, pnr.delete AS status \
                         FROM pnr \
@@ -233,7 +235,8 @@ def cancel():
                         WHERE pnr.pnr_no = '{pnr}' \
                         ORDER BY pnr.name;")
         persons = cursor.fetchall()
-        vals = [(person[1],person[2],person[3],person[4],person[5],person[6].split()) for person in persons]
+        status = ['Booked' if person[12] == 0 else 'Cancelled' for person in persons]
+        vals = [(person[1],person[2],person[3],person[4],person[5],person[6].split(), st) for (person, st) in zip(persons, status)]
         print(vals)
         try:
             cursor.execute(f"SELECT s1.arrival AS arrival_src, s1.departure AS dept_src, s1.train_name, s1.train_number, s2.arrival AS arrival_dest, ts.class,ts.seats_available - COALESCE(pnr.count, 0) seats, TO_DATE('{persons[0][11]}','YYYY-MM-DD') + s2.day - s1.day AS arrival_date \
@@ -262,7 +265,7 @@ def cancel():
         except:
             return render_template('cancel.html', status="error")
         print(tasks)
-        return render_template('print.html', vals=vals, pnr_number=persons[0][0], tasks=tasks, date=persons[0][11], src=persons[0][7], dest=persons[0][8], status="Cancelled")
+        return render_template('print.html', vals=vals, pnr_number=persons[0][0], tasks=tasks, date=persons[0][11], src=persons[0][7], dest=persons[0][8])
         
 if __name__ == "__main__":
     app.run(host="localhost", port=5040, debug=True)

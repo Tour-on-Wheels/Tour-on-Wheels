@@ -12,10 +12,11 @@
     <div class="pnr">
         <h4 style="text-align: center; font-size: xx-large; font-family: Copperplate, Papyrus, fantasy; color: blue; line-height: 5%;">Cancel Ticket</h4>
         {% if status == "error" %}
-         <h4 style="text-align: center; font-size: large;  fantasy; color: RED; line-height: 5%;">Invalid PNR number!</h4>
+         <h4 style="text-align: center; font-size: large;  fantasy; color: RED; line-height: 5%;">Invalid Details. Ticket does not exist!</h4>
          {% endif %}
         <form action="/cancel" method="POST">
             <p>PNR Number: </p><input style="width: 85%;" type="type" name="pnr" id="pnr">
+            <p>Name: </p><input style="width: 85%;" type="type" name="name" id="name">
             <p></p>
             <input class="press" type="submit" value="Submit">
         </form>
