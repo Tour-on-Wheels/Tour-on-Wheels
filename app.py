@@ -12,6 +12,7 @@ connection = psycopg2.connect(
     port = 5432
 )
 cursor = connection.cursor()
+pnr = 0
 
 regex_email = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
 def check_email(email):   
@@ -48,7 +49,8 @@ def index():
                 schedules as s2 \
             where s1.station_name = '{src}' \
             AND s2.station_name = '{dest}'  \
-            and s1.train_number = s2.train_number  \
+            AND s1.train_number = s2.train_number  \
+            AND (s2.day > s1.day OR (s2.day = s1.day AND s2.arrival >= s1.departure)) \
             AND 0 < ( \
                     SELECT (select sum(seats_available) from total_seats_available where train_id = s1.train_number) - \
                     ( \
@@ -74,7 +76,7 @@ def booking(src, dest, train_number, date):
     print(src)
     print(dest)
     cursor.execute(f"SELECT s1.arrival AS arrival_src, s1.departure AS dept_src, s1.train_name, s1.train_number, s2.arrival AS arrival_dest, ts.class,ts.seats_available - COALESCE(pnr.count, 0) seats, TO_DATE('{date}','YYYY-MM-DD') + s2.day - s1.day AS arrival_date \
-FROM schedules AS s1, \
+    FROM schedules AS s1, \
     schedules AS s2, \
     total_seats_available AS ts \
     LEFT JOIN \
@@ -90,6 +92,7 @@ FROM schedules AS s1, \
     WHERE s1.station_name = '{src}' \
     AND s2.station_name = '{dest}'  \
     AND s1.train_number = s2.train_number \
+    AND (s2.day > s1.day OR (s2.day = s1.day AND s2.arrival >= s1.departure)) \
     AND s1.train_number = '{train_number}' \
     AND ts.train_id = s1.train_number \
     ORDER BY s1.arrival;") 
@@ -115,6 +118,7 @@ def details(src, dest, train_number, train_class, date):
             WHERE s1.station_name = '{src}' \
             AND s2.station_name = '{dest}'  \
             AND s1.train_number = s2.train_number \
+            AND (s2.day > s1.day OR (s2.day = s1.day AND s2.arrival >= s1.departure)) \
             AND s1.train_number = '{train_number}' \
             AND ts.train_id = s1.train_number \
             AND ts.class='{train_class}' \
@@ -145,9 +149,18 @@ def details(src, dest, train_number, train_class, date):
         email = request.form['email']
         mobile = request.form['mobile']
         seat = request.form['pref']
+        seat_list = seat.split()
+        global pnr
+        pnr += 1
+        pnr_number = str(pnr)
+        while len(pnr_number) < 10:
+            pnr_number = "0"+pnr_number
+        print(f"INSERT INTO pnr VALUES ('{pnr_number}', '{train_number}', '{date}', '{seat_list[0]}', {seat_list[1]}, '{seat_list[2]}', '{name}', {age}, '{gender}', '{mobile}', '{email}', '{src}', '{dest}', 0);")
+        cursor.execute(f"INSERT INTO pnr VALUES ('{pnr_number}', '{train_number}', '{date}', '{seat_list[0]}', {seat_list[1]}, '{seat_list[2]}', '{name}', {age}, '{gender}', '{mobile}', '{email}', '{src}', '{dest}', 0);")
+        connection.commit()
         # check_email(email)
         # check_mobile(mobile)
-        return render_template('print.html', name=name, age=age, gender=gender, email=email, mobile=mobile, seat=seat, tasks=tasks, date=date, src=src, dest=dest)
+        return render_template('print.html', name=name, age=age, gender=gender, email=email, mobile=mobile, seat=seat, pnr_number=pnr_number, tasks=tasks, date=date, src=src, dest=dest)
 
 
 if __name__ == "__main__":
