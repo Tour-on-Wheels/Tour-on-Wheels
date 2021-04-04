@@ -14,9 +14,9 @@ import numpy as np
 
 connection = psycopg2.connect(
     host = "localhost",
-    database = "irctc_db",
-    user = "krdipen",
-    password = "password",
+    database = "group_40",
+    user = "postgres",
+    password = "1907",
     port = 5432
 )
 
