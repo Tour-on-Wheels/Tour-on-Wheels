@@ -11,6 +11,9 @@
         <h1 style="text-align: center; font-size: xx-large;">TOUR ON WHEELS</h1>
     <div class="pnr">
         <h4 style="text-align: center; font-size: xx-large; font-family: Copperplate, Papyrus, fantasy; color: blue; line-height: 5%;">PNR Enquiry</h4>
+        {% if status == "error" %}
+         <h4 style="text-align: center; font-size: large;  fantasy; color: RED; line-height: 5%;">Invalid PNR number!</h4>
+         {% endif %}
         <form action="/enquiry" method="POST">
             <p>PNR Number: </p><input style="width: 85%;" type="type" name="pnr" id="pnr">
             <p></p>
