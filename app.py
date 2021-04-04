@@ -4,21 +4,21 @@ import os
 import re
 import numpy as np
 
-connection = psycopg2.connect(
-    host = "10.17.50.232",
-    database = "group_40",
-    user = "group_40",
-    password = "CgegedIYggdx1",
-    port = 5432
-)
-
 # connection = psycopg2.connect(
-#     host = "localhost",
-#     database = "irctc_db",
-#     user = "krdipen",
-#     password = "password",
+#     host = "10.17.50.232",
+#     database = "group_40",
+#     user = "group_40",
+#     password = "CgegedIYggdx1",
 #     port = 5432
 # )
+
+connection = psycopg2.connect(
+    host = "localhost",
+    database = "irctc_db",
+    user = "krdipen",
+    password = "password",
+    port = 5432
+)
 
 cursor = connection.cursor()
 
