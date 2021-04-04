@@ -12,8 +12,6 @@ connection = psycopg2.connect(
     port = 5432
 )
 
-
-
 cursor = connection.cursor()
 
 regex_email = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
@@ -150,38 +148,65 @@ def details(src, dest, train_number, train_class, date, status):
         mobile = request.form.getlist('mobile')
         seat = request.form.getlist('pref')
         seat_list = [i.split() for i in seat]
-        
+        cursor.execute(f"SELECT pnr_no FROM pnr GROUP BY pnr_no ORDER BY pnr_no DESC LIMIT 1;")
+        pnr_number = cursor.fetchone()[0]
+        pnr_number = str(int(pnr_number)+1)
+        while len(pnr_number) < 10:
+            pnr_number = "0"+pnr_number
         try:
             for i in range(len(name)):
-                cursor.execute(f"SELECT pnr_no FROM pnr GROUP BY pnr_no ORDER BY pnr_no DESC LIMIT 1;")
-                pnr_number = cursor.fetchone()[0]
-                print("\n\n\n\n\n\n")
-                print(pnr_number)
-                print(type(pnr_number))
-                pnr_number = str(int(pnr_number)+1)
-                while len(pnr_number) < 10:
-                    pnr_number = "0"+pnr_number
                 print(f"INSERT INTO pnr VALUES ('{pnr_number}', '{train_number}', '{date}', '{seat_list[i][0]}', {seat_list[i][1]}, '{seat_list[i][2]}', '{name[i]}', {age[i]}, '{gender[i]}', '{mobile[i]}', '{email[i]}', '{src}', '{dest}', 0);")
                 cursor.execute(f"INSERT INTO pnr VALUES ('{pnr_number}', '{train_number}', '{date}', '{seat_list[i][0]}', {seat_list[i][1]}, '{seat_list[i][2]}', '{name[i]}', {age[i]}, '{gender[i]}', '{mobile[i]}', '{email[i]}', '{src}', '{dest}', 0);")
         except:
             connection.rollback()
             return redirect(f'/info/{src}/{dest}/{tasks[3]}/{tasks[5]}/{date}/error')
         connection.commit()
-        return render_template('print.html', name=name, age=age, gender=gender, email=email, mobile=mobile, seat=seat, pnr_number=pnr_number, tasks=tasks, date=date, src=src, dest=dest)
+        vals = [k for k in zip(name, age, gender, email, mobile, seat)]
+        print(vals)
+        return render_template('print.html', vals=vals, pnr_number=pnr_number, tasks=tasks, date=date, src=src, dest=dest, status="Booked")
 
-@app.route('/enquiry/', methods=['POST', 'GET'])
+@app.route('/enquiry', methods=['POST', 'GET'])
 def enquiry():
     if(request.method == 'GET'):
         return render_template('enquiry.html')
     elif (request.method == 'POST'):
         pnr = request.form['pnr']
-        cursor.execute(f"SELECT name, age, gender, email, mobile, seat_no, coach_no, birth_type, date, src, dest, status, train_number FROM PNR where PNR_no = '{pnr}")
-        val = cursor.fetchall()
-        date = val[8]
-        src = val[9]
-        dest = val[10]
-        train_number = val[11]
-        return render_template('print.html', name=val[0], age=val[1], gender=val[2], email=val[3], mobile=val[4], seat=(val[6], val[5], val[7]), pnr_number=pnr, date=val[8], src=val[9], dest=val[10], status=val[11])
+        cursor.execute(f"SELECT pnr.pnr_no, pnr.name, pnr.age::varchar(10), pnr.gender, pnr.email, pnr.mobile, CONCAT(pnr.coach_no,' ',pnr.seat_no::varchar(10),' ',pnr.birth_type) AS seat, pnr.src, pnr.dest, pnr.train_number, coach.class AS train_class, pnr.date, pnr.delete AS status \
+                        FROM pnr \
+                        JOIN coach \
+                            ON pnr.coach_no = coach.coach_name \
+                        WHERE pnr.pnr_no = '{pnr}' \
+                        ORDER BY pnr.name;")
+        persons = cursor.fetchall()
+        vals = [(person[1],person[2],person[3],person[4],person[5],person[6]) for person in persons]
+        print(vals)
+        cursor.execute(f"SELECT s1.arrival AS arrival_src, s1.departure AS dept_src, s1.train_name, s1.train_number, s2.arrival AS arrival_dest, ts.class,ts.seats_available - COALESCE(pnr.count, 0) seats, TO_DATE('{persons[0][11]}','YYYY-MM-DD') + s2.day - s1.day AS arrival_date \
+            FROM schedules AS s1, \
+            schedules AS s2, \
+            total_seats_available AS ts \
+            LEFT JOIN \
+            ( \
+                SELECT coach.class, PNR.train_number, count(*) FROM PNR, coach \
+                WHERE DATE ='{persons[0][11]}' \
+                AND coach.coach_name = PNR.coach_no \
+                AND PNR.delete = 0 \
+                GROUP BY coach.class, PNR.train_number \
+            ) AS pnr \
+            ON (pnr.train_number = ts.train_id \
+                AND pnr.class = ts.class) \
+            WHERE s1.station_name = '{persons[0][7]}' \
+            AND s2.station_name = '{persons[0][8]}'  \
+            AND s1.train_number = s2.train_number \
+            AND (s2.day > s1.day OR (s2.day = s1.day AND s2.arrival >= s1.departure)) \
+            AND s1.train_number = '{persons[0][9]}' \
+            AND ts.train_id = s1.train_number \
+            AND ts.class='{persons[0][10]}' \
+            ORDER BY s1.arrival;")
+        tasks = cursor.fetchone()
+        print(tasks)
+        status = 'Booked' if persons[0][12] == 0 else 'Cancelled'
+        return render_template('print.html', vals=vals, pnr_number=persons[0][0], tasks=tasks, date=persons[0][11], src=persons[0][7], dest=persons[0][8], status=status)
+
 
 @app.route('/cancel', methods=['POST', 'GET'])
 def cancel():
