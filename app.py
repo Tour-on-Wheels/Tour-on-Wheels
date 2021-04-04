@@ -13,10 +13,10 @@ import numpy as np
 # )
 
 connection = psycopg2.connect(
-    host = "127.0.0.1",
-    database = "railway",
-    user = "sanjaliagrawal",
-    password = "ALOHOMORA",
+    host = "localhost",
+    database = "group_40",
+    user = "postgres",
+    password = "1907",
     port = 5432
 )
 
