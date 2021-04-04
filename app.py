@@ -143,21 +143,23 @@ def details(src, dest, train_number, train_class, date):
         return render_template('info.html', tasks = tasks, date=date, src=src, dest=dest, prefered_seats = empty_seats)
 
     elif (request.method == 'POST'):
-        name = request.form['name']
-        age = request.form['age']
-        gender = request.form['gender']
-        email = request.form['email']
-        mobile = request.form['mobile']
-        seat = request.form['pref']
-        seat_list = seat.split()
+        name = request.form.getlist('name')
+        age = request.form.getlist('age')
+        gender = request.form.getlist('gender')
+        email = request.form.getlist('email')
+        mobile = request.form.getlist('mobile')
+        seat = request.form.getlist('pref')
+        seat_list = [i.split() for i in seat]
         global pnr
-        pnr += 1
-        pnr_number = str(pnr)
-        while len(pnr_number) < 10:
-            pnr_number = "0"+pnr_number
-        print(f"INSERT INTO pnr VALUES ('{pnr_number}', '{train_number}', '{date}', '{seat_list[0]}', {seat_list[1]}, '{seat_list[2]}', '{name}', {age}, '{gender}', '{mobile}', '{email}', '{src}', '{dest}', 0);")
-        cursor.execute(f"INSERT INTO pnr VALUES ('{pnr_number}', '{train_number}', '{date}', '{seat_list[0]}', {seat_list[1]}, '{seat_list[2]}', '{name}', {age}, '{gender}', '{mobile}', '{email}', '{src}', '{dest}', 0);")
-        connection.commit()
+        
+        for i in range(len(name)):
+            pnr += 1
+            pnr_number = str(pnr)
+            while len(pnr_number) < 10:
+                pnr_number = "0"+pnr_number
+            print(f"INSERT INTO pnr VALUES ('{pnr_number}', '{train_number}', '{date}', '{seat_list[i][0]}', {seat_list[i][1]}, '{seat_list[i][2]}', '{name[i]}', {age[i]}, '{gender[i]}', '{mobile[i]}', '{email[i]}', '{src[i]}', '{dest[i]}', 0);")
+            cursor.execute(f"INSERT INTO pnr VALUES ('{pnr_number}', '{train_number}', '{date}', '{seat_list[i][0]}', {seat_list[i][1]}, '{seat_list[i][2]}', '{name[i]}', {age[i]}, '{gender[i]}', '{mobile[i]}', '{email[i]}', '{src[i]}', '{dest[i]}', 0);")
+            connection.commit()
         # check_email(email)
         # check_mobile(mobile)
         return render_template('print.html', name=name, age=age, gender=gender, email=email, mobile=mobile, seat=seat, pnr_number=pnr_number, tasks=tasks, date=date, src=src, dest=dest)
