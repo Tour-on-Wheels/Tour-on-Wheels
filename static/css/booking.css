@@ -32,7 +32,7 @@ h1{
     bottom: 0;
     left: 0;
     right: 0;
-    height: 60%;
+    height: fit-content;
     position: absolute;
     width: 40%;
     padding-left: 3.5%;
@@ -41,7 +41,6 @@ h1{
     padding-top: 1.5%;
     box-shadow:0 0 20px rgba(0,0,0,0.8);
     border-radius: 5px;
-    position: absolute;
     background-color: white;
 }
 
