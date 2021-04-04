@@ -105,13 +105,11 @@ CREATE TABLE PNR (
 	gender text not null,
 	mobile text null,
 	email text null,
-	source_schedule int not null,
-	dest_schedule int not null,
+	src text not null,
+	dest text not null,
 	delete int default 0,
 	constraint train_PNR_constraint foreign key (train_number) references trains(number),
 	constraint coach_PNR_constraint foreign key (coach_no) references coach(coach_name),
-	constraint source_PNR_constraint foreign key (source_schedule) references schedules(id),
-	constraint dest_PNR_constraint foreign key (dest_schedule) references schedules(id),
 	constraint seat_coach_PNR_constraint primary key (train_number, date, coach_no, seat_no)
 );
 
