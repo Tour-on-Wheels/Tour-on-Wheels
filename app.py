@@ -4,22 +4,22 @@ import os
 import re
 import numpy as np
 
-# connection = psycopg2.connect(
-#     host = "10.17.50.232",
-#     database = "group_40",
-#     user = "group_40",
-#     password = "CgegedIYggdx1",
-#     port = 5432
-# )
-# cursor = connection.cursor()
-
 connection = psycopg2.connect(
-    host = "127.0.0.1",
-    database = "railway",
-    user = "sanjaliagrawal",
-    password = "ALOHOMORA",
+    host = "10.17.50.232",
+    database = "group_40",
+    user = "group_40",
+    password = "CgegedIYggdx1",
     port = 5432
 )
+# cursor = connection.cursor()
+
+# connection = psycopg2.connect(
+#     host = "127.0.0.1",
+#     database = "group_40",
+#     user = "postgres",
+#     password = "1907",
+#     port = 5432
+# )
 
 # connection = psycopg2.connect(
 #     host = "127.0.0.1",
@@ -169,4 +169,4 @@ def details(src, dest, train_number, train_class, date):
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host="localhost", port=5040, debug=True)
