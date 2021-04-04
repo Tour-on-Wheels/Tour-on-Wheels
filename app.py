@@ -13,12 +13,13 @@ import numpy as np
 # )
 
 connection = psycopg2.connect(
-    host = "localhost",
-    database = "group_40",
-    user = "postgres",
-    password = "1907",
+    host = "127.0.0.1",
+    database = "railway",
+    user = "sanjaliagrawal",
+    password = "ALOHOMORA",
     port = 5432
 )
+
 
 
 cursor = connection.cursor()
@@ -226,22 +227,24 @@ def cancel():
     elif (request.method == 'POST'):
         pnr = request.form['pnr']
         name = request.form['name']
-        cursor.execute(f"UPDATE pnr SET delete = 1 WHERE pnr_no = '{pnr}' AND name = '{name}';")
-        connection.commit()
-        cursor.execute(f"SELECT pnr.pnr_no, pnr.name, pnr.age::varchar(10), pnr.gender, pnr.email, pnr.mobile, CONCAT(pnr.coach_no,' ',pnr.seat_no::varchar(10),' ',pnr.birth_type) AS seat, pnr.src, pnr.dest, pnr.train_number, coach.class AS train_class, pnr.date, pnr.delete AS status \
-                        FROM pnr \
-                        JOIN coach \
-                            ON pnr.coach_no = coach.coach_name \
-                        WHERE pnr.pnr_no = '{pnr}' \
-                        ORDER BY pnr.name;")
-        persons = cursor.fetchall()
-        status = ['Booked' if person[12] == 0 else 'Cancelled' for person in persons]
-        vals = [(person[1],person[2],person[3],person[4],person[5],person[6].split(), st) for (person, st) in zip(persons, status)]
-        print(vals)
+        
         try:
-            cursor.execute(f"SELECT pnr.coach_no, pnr.seat_no, pnr.delete FROM pnr WHERE pnr.pnr_no = '{pnr}' AND pnr.name = '{name}';")
+            cursor.execute(f"SELECT pnr.coach_no, pnr.seat_no, pnr.delete FROM pnr WHERE pnr.pnr_no = '{pnr}' AND pnr.name = '{name}' and delete=0;")
             list = cursor.fetchall()
             print(list[0])
+            cursor.execute(f"UPDATE pnr SET delete = 1 WHERE pnr_no = '{pnr}' AND name = '{name}';")
+            connection.commit()
+            cursor.execute(f"SELECT pnr.pnr_no, pnr.name, pnr.age::varchar(10), pnr.gender, pnr.email, pnr.mobile, CONCAT(pnr.coach_no,' ',pnr.seat_no::varchar(10),' ',pnr.birth_type) AS seat, pnr.src, pnr.dest, pnr.train_number, coach.class AS train_class, pnr.date, pnr.delete AS status \
+                            FROM pnr \
+                            JOIN coach \
+                                ON pnr.coach_no = coach.coach_name \
+                            WHERE pnr.pnr_no = '{pnr}' \
+                            ORDER BY pnr.name;")
+            persons = cursor.fetchall()
+            status = ['Booked' if person[12] == 0 else 'Cancelled' for person in persons]
+            vals = [(person[1],person[2],person[3],person[4],person[5],person[6].split(), st) for (person, st) in zip(persons, status)]
+            print(vals)
+            
             cursor.execute(f"SELECT s1.arrival AS arrival_src, s1.departure AS dept_src, s1.train_name, s1.train_number, s2.arrival AS arrival_dest, ts.class,ts.seats_available - COALESCE(pnr.count, 0) seats, TO_DATE('{persons[0][11]}','YYYY-MM-DD') + s2.day - s1.day AS arrival_date \
                 FROM schedules AS s1, \
                 schedules AS s2, \
