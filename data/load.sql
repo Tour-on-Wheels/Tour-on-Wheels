@@ -113,7 +113,7 @@ CREATE TABLE PNR (
 	constraint seat_coach_PNR_constraint primary key (train_number, date, coach_no, seat_no)
 );
 
-insert into PNR values ('0000000000', '12547', '2020-01-01', 'D1', 0, 0, '0', 0, '0', '0', '0', '0', '0', 1);
+insert into PNR values ('0000000000', '12547', '2020-01-01', 'H1', 0, '0', '0', 0, '0', '0', '0', '0', '0', 1);
 
 CREATE VIEW total_seats_available AS
 SELECT trains.number as train_id, coach.class as class, SUM(coach.total_seats) as seats_available
