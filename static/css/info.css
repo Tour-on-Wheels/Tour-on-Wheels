@@ -23,28 +23,28 @@ h1{
     background-position: center; /* Center the image */
     background-repeat: no-repeat; /* Do not repeat the image */
     background-size: cover; 
-    position: relative;
+    
+}
+
+
+.extra {
+    display: flex;
+    justify-content: center;
+    margin-top: 3%;
 }
 
 .info {
     margin: auto;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 70%;
-    position: absolute;
-    width: 65%;
+    height:max-content;
+    width: 55%;
     padding-left: 3.5%;
     padding-right: 3.5%;
     padding-bottom: 3.5%;
     padding-top: 1.5%;
     box-shadow:0 0 20px rgba(0,0,0,0.8);
     border-radius: 5px;
-    position: absolute;
     background-color: white;
 }
-
 .content {
 
     display: flex;
@@ -59,11 +59,11 @@ h4{
     background-color: blue; 
     color: white;
     float: right;
-    margin-right: 1.5%;
+    margin-top: 5%;
     font-size: larger;
-    position: absolute;
+    position: relative;
     bottom: 2%;
-    right: 1.5%;
+    right: 1%;
     
 }
 .submit:hover {
@@ -76,9 +76,10 @@ h4{
     background-color: blue; 
     color: white;
     float: left;
-    margin-right: 1.5%;
+    margin-left: 0.5%;
+    margin-top: 5%;
     font-size: larger;
-    position: absolute;
+    position: relative;
     bottom: 2%;
 }
 .add:hover {
@@ -92,14 +93,11 @@ table{
 th {
     height: 30px;
     color: white;
-    width: 5%;
+    width: 10%;
     background-color: black;  
 }
 td{
     text-align: center;
     height: 30px;
-    width: 5%;
-}
-.class{
-    width: 2%;
+    width: 10%;
 }

@@ -10,22 +10,25 @@
 <div class="content1">
     <h1 style="text-align: center; font-size: x-large; font-family: 'Brush Script MT', cursive;"><br>Indian Railways</h1>
     <h1 style="text-align: center; font-size: xx-large;">TOUR ON WHEELS</h1>
+    <div class="extra">
     <div class="info">
         <h4 style="text-align: center; font-size: xx-large; font-family: Copperplate, Papyrus, fantasy; color: blue; line-height: 5%;">PNR NO: {{pnr_number}}</h4> 
     <div class="content">
-        <div class="train" style="margin-left: 15%;">
+        <div class="train" style="margin-left: 10%;">
         <h3>{{src}} to {{dest}}</h3>
         <h3 style="font-size: xxx-large; line-height: 1%;"> {{tasks[3]}}</h3>
         <h5>{{tasks[2]}}</h5>
+
+        <h4 style="line-height: 5%; ">Class: <span style="color: blue;">{{tasks[5]}}</span></h4>
+        <h4 style="line-height: 5%; ">Status: <span style="color: blue;">{{status}}</span></h4>
     </div>
-        <div style="margin-left: 20%;" class="times">
+        <div style="margin-left: 10%;" class="times">
             <p><b>Arrival at {{src}}</b> : <br>{{date}} -> {{tasks[0]}}</p>
         <p><b>Departure from {{src}}</b> : <br>{{tasks[1]}}</p>
         <p><b>Arrival at {{dest}}</b> : <br> {{tasks[7]}} -> {{tasks[4]}}</p>
         </div>
         </div>
-        <h4 style="line-height: 5%;">Class: <span style="color: blue;">{{tasks[5]}}</span></h4>
-        <h4 style="line-height: 5%;">Status: <span style="color: blue;">{{status}}</span></h4>
+        
         <table id="t">
             <tr>
                 <th>Name</th>
@@ -52,6 +55,7 @@
         </table>
         <a href="/"><input class="submit" type="submit" value="Homepage"></a>
     </div>
+</div>
 </div>
 
 
