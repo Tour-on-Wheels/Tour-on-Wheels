@@ -175,7 +175,7 @@ def enquiry():
         return render_template('enquiry.html')
     elif (request.method == 'POST'):
         pnr = request.form['pnr']
-        cursor.execute(f"SELECT name, age, gender, email, mobile, seat_no, coach_no, birth_type, date, src, dest, status, train_number FROM PNR where PNR_no = '{pnr}")
+        cursor.execute(f"SELECT name, age, gender, email, mobile, seat_no, coach_no, birth_type, date, src, dest, delete as status, train_number FROM PNR where PNR_no = '{pnr}'")
         val = cursor.fetchall()
         date = val[8]
         src = val[9]
