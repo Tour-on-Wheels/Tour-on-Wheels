@@ -15,7 +15,11 @@ h1{
 .content1 {
     margin: 0 auto;
     height: 770px;
-    background-image: url('indian-2405928_1920.jpg');
+    background: linear-gradient(
+    to top,
+    rgba(0,0,0, 0),
+    #222a3fad
+  ),url(indian-2405928_1920.jpg);
     background-position: center; /* Center the image */
     background-repeat: no-repeat; /* Do not repeat the image */
     background-size: cover; 

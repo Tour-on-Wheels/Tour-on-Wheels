@@ -1,0 +1,87 @@
+body {
+    margin: 0 px;
+    font-family: sans-serif;
+    background-color: #222a3f;
+}
+
+h1{
+    color: white;
+    line-height: 45%;
+    text-shadow: 0 0 30px rgba(5, 16, 78, 0.8);
+    text-align: center;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+.content1 {
+    margin: 0 auto;
+    height: 770px;
+    background: linear-gradient(
+    to top,
+    rgba(0,0,0, 0),
+    #222a3fad
+  ),url(indian-2405928_1920.jpg);
+    background-position: center; /* Center the image */
+    background-repeat: no-repeat; /* Do not repeat the image */
+    background-size: cover; 
+    position: relative;
+}
+
+.info {
+    margin: auto;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60%;
+    position: absolute;
+    width: 70%;
+    padding-left: 3.5%;
+    padding-right: 3.5%;
+    padding-bottom: 3.5%;
+    padding-top: 1.5%;
+    box-shadow:0 0 20px rgba(0,0,0,0.8);
+    border-radius: 5px;
+    position: absolute;
+    background-color: white;
+}
+
+.content {
+
+    display: flex;
+}
+
+h4{
+    line-height: 10%;
+}
+
+.submit{
+    transition: box-shadow .3s;
+    background-color: blue; 
+    color: white;
+    float: right;
+    margin-right: 1.5%;
+    font-size: larger;
+    
+}
+.submit:hover {
+    box-shadow: 0 0 20px rgba(12, 12, 12, 0.2);
+    font-weight: bold;
+  }
+
+table{
+    margin-top: 5%;
+}
+th {
+    height: 30px;
+    color: white;
+    width: 10%;
+    background-color: black;  
+}
+td{
+    text-align: center;
+    height: 30px;
+    width: 10%;
+}
+.class{
+    width: 2%;
+}
