@@ -4,13 +4,13 @@ import os
 import re
 import numpy as np
 
-connection = psycopg2.connect(
-    host = "10.17.50.232",
-    database = "group_40",
-    user = "group_40",
-    password = "CgegedIYggdx1",
-    port = 5432
-)
+# connection = psycopg2.connect(
+#     host = "10.17.50.232",
+#     database = "group_40",
+#     user = "group_40",
+#     password = "CgegedIYggdx1",
+#     port = 5432
+# )
 
 # connection = psycopg2.connect(
 #     host = "localhost",
@@ -19,6 +19,15 @@ connection = psycopg2.connect(
 #     password = "password",
 #     port = 5432
 # )
+
+connection = psycopg2.connect(
+    host = "127.0.0.1",
+    database = "railway",
+    user = "sanjaliagrawal",
+    password = "ALOHOMORA",
+    port = 5432
+)
+
 
 cursor = connection.cursor()
 
@@ -177,7 +186,18 @@ def details(src, dest, train_number, train_class, date, status):
 
 @app.route('/enquiry/', methods=['POST', 'GET'])
 def enquiry():
-    return render_template('enquiry.html')
+    if(request.method == 'GET'):
+        return render_template('enquiry.html')
+    elif (request.method == 'POST'):
+        pnr = request.form['pnr']
+        cursor.execute(f"SELECT name, age, gender, email, mobile, seat_no, coach_no, birth_type, date, src, dest, status, train_number FROM PNR where PNR_no = '{pnr}")
+        val = cursor.fetchall()
+        date = val[8]
+        src = val[9]
+        dest = val[10]
+        train_number = val[11]
+        return render_template('print.html', name=val[0], age=val[1], gender=val[2], email=val[3], mobile=val[4], seat=(val[6], val[5], val[7]), pnr_number=pnr, date=val[8], src=val[9], dest=val[10], status=val[11])
+
 
 if __name__ == "__main__":
     app.run(host="localhost", port=5040, debug=True)
