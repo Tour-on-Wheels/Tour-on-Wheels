@@ -4,15 +4,23 @@ import os
 import re
 import numpy as np
 
+# connection = psycopg2.connect(
+#     host = "10.17.50.232",
+#     database = "group_40",
+#     user = "group_40",
+#     password = "CgegedIYggdx1",
+#     port = 5432
+# )
+
 connection = psycopg2.connect(
-    host = "10.17.50.232",
-    database = "group_40",
-    user = "group_40",
-    password = "CgegedIYggdx1",
+    host = "localhost",
+    database = "irctc_db",
+    user = "krdipen",
+    password = "password",
     port = 5432
 )
+
 cursor = connection.cursor()
-pnr = 0
 
 regex_email = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
 def check_email(email):   
@@ -43,7 +51,6 @@ def index():
         dest = request.form['destination']
         date = request.form['date']
         print(date)
-        # cursor.execute(f"SELECT s1.arrival, s1.departure, s1.train_name, s1.train_number, s2.arrival FROM schedules as s1, schedules as s2 where s1.station_name = '{src}' AND s2.station_name = '{dest}' and s1.train_number = s2.train_number ORDER BY s1.arrival;")
         cursor.execute(f"SELECT s1.arrival, s1.departure, s1.train_name, s1.train_number, s2.arrival, TO_DATE('{date}','YYYY-MM-DD') + s2.day - s1.day AS arrival_date \
             FROM schedules as s1, \
                 schedules as s2 \
@@ -63,10 +70,9 @@ def index():
             ORDER BY s1.arrival;" )
         tasks = cursor.fetchall()
         dis = "block"
-        print(len(tasks)) #src, dest, arrival on src, arrival on dest, train_number, train_name
+        print(len(tasks))
         return render_template('index.html', tasks = tasks, date = date, src=src, dest=dest, stations = stations, dis = dis)
     elif(request.method == 'GET'):
-    #     tasks = Todo.query.order_by(Todo.date_created).all()
         dis = 'none'
         return render_template('index.html', stations = stations, dis=dis)
 
@@ -150,18 +156,19 @@ def details(src, dest, train_number, train_class, date):
         mobile = request.form.getlist('mobile')
         seat = request.form.getlist('pref')
         seat_list = [i.split() for i in seat]
-        global pnr
         
         for i in range(len(name)):
-            pnr += 1
-            pnr_number = str(pnr)
+            cursor.execute(f"SELECT pnr_no FROM pnr GROUP BY pnr_no ORDER BY pnr_no DESC LIMIT 1;")
+            pnr_number = cursor.fetchone()[0]
+            print("\n\n\n\n\n\n")
+            print(pnr_number)
+            print(type(pnr_number))
+            pnr_number = str(int(pnr_number)+1)
             while len(pnr_number) < 10:
                 pnr_number = "0"+pnr_number
-            print(f"INSERT INTO pnr VALUES ('{pnr_number}', '{train_number}', '{date}', '{seat_list[i][0]}', {seat_list[i][1]}, '{seat_list[i][2]}', '{name[i]}', {age[i]}, '{gender[i]}', '{mobile[i]}', '{email[i]}', '{src[i]}', '{dest[i]}', 0);")
-            cursor.execute(f"INSERT INTO pnr VALUES ('{pnr_number}', '{train_number}', '{date}', '{seat_list[i][0]}', {seat_list[i][1]}, '{seat_list[i][2]}', '{name[i]}', {age[i]}, '{gender[i]}', '{mobile[i]}', '{email[i]}', '{src[i]}', '{dest[i]}', 0);")
+            print(f"INSERT INTO pnr VALUES ('{pnr_number}', '{train_number}', '{date}', '{seat_list[i][0]}', {seat_list[i][1]}, '{seat_list[i][2]}', '{name[i]}', {age[i]}, '{gender[i]}', '{mobile[i]}', '{email[i]}', '{src}', '{dest}', 0);")
+            cursor.execute(f"INSERT INTO pnr VALUES ('{pnr_number}', '{train_number}', '{date}', '{seat_list[i][0]}', {seat_list[i][1]}, '{seat_list[i][2]}', '{name[i]}', {age[i]}, '{gender[i]}', '{mobile[i]}', '{email[i]}', '{src}', '{dest}', 0);")
             connection.commit()
-        # check_email(email)
-        # check_mobile(mobile)
         return render_template('print.html', name=name, age=age, gender=gender, email=email, mobile=mobile, seat=seat, pnr_number=pnr_number, tasks=tasks, date=date, src=src, dest=dest)
 
 
