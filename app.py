@@ -146,7 +146,7 @@ def details(src, dest, train_number, train_class, date, status):
             for s in l:
                 if (c, s) not in filled_seats:
                     empty_seats.append((c, s, seat_type[(s-1)%all_types]))
-        return render_template('info.html', tasks = tasks, date=date, src=src, dest=dest, prefered_seats = empty_seats, status=staus)
+        return render_template('info.html', tasks = tasks, date=date, src=src, dest=dest, prefered_seats = empty_seats, status=status)
 
     elif (request.method == 'POST'):
         name = request.form.getlist('name')
