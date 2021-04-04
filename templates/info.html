@@ -13,12 +13,12 @@
     function addRow() {
         var table = document.getElementById("t");
         table.insertRow(-1).innerHTML = ' <tr> \
-                <td><input class="inp" type="text" name="name" id="name"></td> \
-                <td><input class="inp" type="int" name="age" id="age"></td> \
-                <td><input class="inp" list="genlist" type="text" name="gender" id="gender"></td> \
-                <td><input class="inp" type="email" name="email" id="email"></td> \
-                <td><input class="inp" type="tel" name="mobile" id="mobile"></td> \
-                <td><input class="inp" list="myList" type="text" name="pref" id="pref"></td> \
+            <td><input style="width: 92%;" type="text" name="name" id="name"></td> \
+                <td><input style="width: 92%;" type="int" name="age" id="age"></td> \
+                <td><input style="width: 92%;" list="genlist" type="text" name="gender" id="gender"></td> \
+                <td><input style="width: 92%;" type="email" name="email" id="email"></td> \
+                <td><input style="width: 92%;" type="tel" name="mobile" id="mobile"></td> \
+                <td><input style="width: 92%;" list="myList" type="text" name="pref" id="pref"></td>\
             </tr>'
     }
 </script>
@@ -26,25 +26,24 @@
 <div class="content1">
     <h1 style="text-align: center; font-size: x-large; font-family: 'Brush Script MT', cursive;"><br>Indian Railways</h1>
     <h1 style="text-align: center; font-size: xx-large;">TOUR ON WHEELS</h1>
+    <div class="extra">
     <div class="info">
-        <h4 style="text-align: center; font-size: xx-large; font-family: Copperplate, Papyrus, fantasy; color: blue; line-height: 5%;">Train Booking</h4>
-        {% if status == "error" %}
-        <h4 style="text-align: center; font-size: large;  fantasy; color: RED; line-height: 5%;">A single seat can only be booked to a single person!</h4>
-        {% endif %}
+        <h4 style="text-align: center; font-size: xx-large; font-family: Copperplate, Papyrus, fantasy; color: blue; line-height: 5%;">PNR NO: {{pnr_number}}</h4> 
     <div class="content">
-        <div class="train" style="margin-left: 15%;">
-        
+        <div class="train" style="margin-left: 10%;">
         <h3>{{src}} to {{dest}}</h3>
         <h3 style="font-size: xxx-large; line-height: 1%;"> {{tasks[3]}}</h3>
         <h5>{{tasks[2]}}</h5>
+
+        <h4 style="line-height: 5%; ">Class: <span style="color: blue;">{{tasks[5]}}</span></h4>
+        <h4 style="line-height: 5%; ">Status: <span style="color: blue;">{{status}}</span></h4>
     </div>
-        <div style="margin-left: 20%;" class="times">
+        <div style="margin-left: 10%;" class="times">
             <p><b>Arrival at {{src}}</b> : <br>{{date}} -> {{tasks[0]}}</p>
         <p><b>Departure from {{src}}</b> : <br>{{tasks[1]}}</p>
         <p><b>Arrival at {{dest}}</b> : <br> {{tasks[7]}} -> {{tasks[4]}}</p>
         </div>
         </div>
-        <h4 style="line-height: 5%;">Class: <span style="color: blue;">{{tasks[5]}}</span></h4>
 <div class="form">
     <form action="/info/{{src}}/{{dest}}/{{tasks[3]}}/{{tasks[5]}}/{{date}}/true" method="POST">
         <table id="t">
@@ -57,12 +56,12 @@
                 <th>Seat</th>
             </tr>
             <tr>
-                <td><input class="inp" type="text" name="name" id="name"></td>
-                <td><input class="inp" type="int" name="age" id="age"></td>
-                <td><input class="inp" list="genlist" type="text" name="gender" id="gender"></td>
-                <td><input class="inp" type="email" name="email" id="email"></td>
-                <td><input class="inp" type="tel" name="mobile" id="mobile"></td>
-                <td><input class="inp" list="myList" type="text" name="pref" id="pref"></td>
+                <td><input style="width: 92%;" type="text" name="name" id="name"></td>
+                <td><input style="width: 92%;" type="int" name="age" id="age"></td>
+                <td><input style="width: 92%;" list="genlist" type="text" name="gender" id="gender"></td>
+                <td><input style="width: 92%;" type="email" name="email" id="email"></td>
+                <td><input style="width: 92%;" type="tel" name="mobile" id="mobile"></td>
+                <td><input style="width: 92%;" list="myList" type="text" name="pref" id="pref"></td>
             </tr>
         </table>
         <input class="submit" type="submit" value="Book Ticket">
