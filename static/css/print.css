@@ -1,11 +1,11 @@
 body {
     margin: 0 px;
     font-family: sans-serif;
-    background-color: #222a3f;
+    background-color: white;
 }
 
 h1{
-    color: white;
+    color: black;
     line-height: 45%;
     text-shadow: 0 0 30px rgba(5, 16, 78, 0.8);
     text-align: center;
@@ -15,11 +15,7 @@ h1{
 .content1 {
     margin: 0 auto;
     height: 770px;
-    background: linear-gradient(
-    to top,
-    rgba(0,0,0, 0),
-    #222a3fad
-  ),url(indian-2405928_1920.jpg);
+    background-image: url(stary-2121647_1920.png);
     background-position: center; /* Center the image */
     background-repeat: no-repeat; /* Do not repeat the image */
     background-size: cover; 
@@ -34,7 +30,7 @@ h1{
     right: 0;
     height: 70%;
     position: absolute;
-    width: 65%;
+    width: 55%;
     padding-left: 3.5%;
     padding-right: 3.5%;
     padding-bottom: 3.5%;
@@ -71,20 +67,7 @@ h4{
     font-weight: bold;
   }
 
-  .add{
-    transition: box-shadow .3s;
-    background-color: blue; 
-    color: white;
-    float: left;
-    margin-right: 1.5%;
-    font-size: larger;
-    position: absolute;
-    bottom: 2%;
-}
-.add:hover {
-    box-shadow: 0 0 20px rgba(12, 12, 12, 0.2);
-    font-weight: bold;
-  }
+ 
 
 table{
     margin-top: 5%;
@@ -92,14 +75,10 @@ table{
 th {
     height: 30px;
     color: white;
-    width: 5%;
+    width: 10%;
     background-color: black;  
 }
 td{
     text-align: center;
     height: 30px;
-    width: 5%;
-}
-.class{
-    width: 2%;
 }
