@@ -1,5 +1,4 @@
 from flask import Flask, render_template,request,session,redirect,flash
-from datetime import datetime
 import psycopg2
 import os
 import re
@@ -14,21 +13,21 @@ import numpy as np
 # )
 # cursor = connection.cursor()
 
-# connection = psycopg2.connect(
-#     host = "127.0.0.1",
-#     database = "irctc_db",
-#     user = "krdipen",
-#     password = "password",
-#     port = 5432
-# )
-
 connection = psycopg2.connect(
     host = "127.0.0.1",
-    database = "railway",
-    user = "postgres",
-    password = "1907",
+    database = "irctc_db",
+    user = "krdipen",
+    password = "try@newA1",
     port = 5432
 )
+
+# connection = psycopg2.connect(
+#     host = "127.0.0.1",
+#     database = "railway",
+#     user = "postgres",
+#     password = "1907",
+#     port = 5432
+# )
 
 cursor = connection.cursor()
 
@@ -62,7 +61,7 @@ def index():
         date = request.form['date']
         print(date)
         # cursor.execute(f"SELECT s1.arrival, s1.departure, s1.train_name, s1.train_number, s2.arrival FROM schedules as s1, schedules as s2 where s1.station_name = '{src}' AND s2.station_name = '{dest}' and s1.train_number = s2.train_number ORDER BY s1.arrival;")
-        cursor.execute(f"SELECT s1.arrival, s1.departure, s1.train_name, s1.train_number, s2.arrival \
+        cursor.execute(f"SELECT s1.arrival, s1.departure, s1.train_name, s1.train_number, s2.arrival, TO_DATE('{date}','YYYY-MM-DD') + s2.day - s1.day AS arrival_date \
             FROM schedules as s1, \
                 schedules as s2 \
             where s1.station_name = '{src}' \
@@ -91,7 +90,7 @@ def booking(src, dest, train_number, date):
     print(train_number)
     print(src)
     print(dest)
-    cursor.execute(f"SELECT s1.arrival AS arrival_src, s1.departure AS dept_src, s1.train_name, s1.train_number, s2.arrival AS arrival_dest, ts.class,ts.seats_available - COALESCE(pnr.count, 0) seats \
+    cursor.execute(f"SELECT s1.arrival AS arrival_src, s1.departure AS dept_src, s1.train_name, s1.train_number, s2.arrival AS arrival_dest, ts.class,ts.seats_available - COALESCE(pnr.count, 0) seats, TO_DATE('{date}','YYYY-MM-DD') + s2.day - s1.day AS arrival_date \
 FROM schedules AS s1, \
     schedules AS s2, \
     total_seats_available AS ts \
@@ -115,7 +114,7 @@ FROM schedules AS s1, \
 
 @app.route('/info/<string:src>/<string:dest>/<string:train_number>/<string:train_class>/<string:date>', methods=['POST', 'GET'])
 def details(src, dest, train_number, train_class, date):
-    cursor.execute(f"SELECT s1.arrival AS arrival_src, s1.departure AS dept_src, s1.train_name, s1.train_number, s2.arrival AS arrival_dest, ts.class,ts.seats_available - COALESCE(pnr.count, 0) seats \
+    cursor.execute(f"SELECT s1.arrival AS arrival_src, s1.departure AS dept_src, s1.train_name, s1.train_number, s2.arrival AS arrival_dest, ts.class,ts.seats_available - COALESCE(pnr.count, 0) seats, TO_DATE('{date}','YYYY-MM-DD') + s2.day - s1.day AS arrival_date \
             FROM schedules AS s1, \
             schedules AS s2, \
             total_seats_available AS ts \
@@ -136,7 +135,7 @@ def details(src, dest, train_number, train_class, date):
             AND ts.class='{train_class}' \
             ORDER BY s1.arrival;")
     tasks = cursor.fetchone()
-
+    print(tasks)
     if(request.method == 'GET'):
         cursor.execute(f"SELECT distinct coach_type from coach where class = '{train_class}'")
         seat_type = cursor.fetchall()[0][0].split()
