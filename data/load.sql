@@ -1,4 +1,8 @@
 DROP VIEW IF EXISTS total_seats_available;
+DROP INDEX IF EXISTS pnr_index;
+DROP INDEX IF EXISTS train_date_index;
+DROP INDEX IF EXISTS coach_class_index;
+DROP INDEX IF EXISTS station_train_schedule_index;
 DROP TABLE IF EXISTS PNR;
 DROP TABLE IF EXISTS schedules;
 DROP TABLE IF EXISTS trains;
@@ -112,6 +116,11 @@ CREATE TABLE PNR (
 	constraint coach_PNR_constraint foreign key (coach_no) references coach(coach_name),
 	constraint seat_coach_PNR_constraint primary key (train_number, date, coach_no, seat_no, delete)
 );
+
+create index pnr_index on PNR(PNR_no);
+create index train_date_index on PNR(train_number, date, coach_no);
+create index coach_class_index on coach(class);
+create index station_train_schedule_index on schedules(station_name, train_number);
 
 insert into PNR values ('0000000000', '12547', '2020-01-01', 'H1', 0, '0', '0', 0, '0', '0', '0', '0', '0', 1);
 
