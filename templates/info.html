@@ -5,7 +5,24 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/info.css') }}">
 {% endblock %}
 
+
+
 {% block body %}
+
+<script>
+    function addRow() {
+        var table = document.getElementById("t");
+        table.insertRow(-1).innerHTML = ' <tr> \
+                <td><input class="inp" type="text" name="name" id="name"></td> \
+                <td><input class="inp" type="int" name="age" id="age"></td> \
+                <td><input class="inp" list="genlist" type="text" name="gender" id="gender"></td> \
+                <td><input class="inp" type="email" name="email" id="email"></td> \
+                <td><input class="inp" type="tel" name="mobile" id="mobile"></td> \
+                <td><input class="inp" list="myList" type="text" name="pref" id="pref"></td> \
+            </tr>'
+    }
+</script>
+
 <div class="content1">
     <h1 style="text-align: center; font-size: x-large; font-family: 'Brush Script MT', cursive;"><br>Indian Railways</h1>
     <h1 style="text-align: center; font-size: xx-large;">TOUR ON WHEELS</h1>
@@ -28,7 +45,7 @@
         <h4 style="line-height: 5%;">Class: <span style="color: blue;">{{tasks[5]}}</span></h4>
 <div class="form">
     <form action="/info/{{src}}/{{dest}}/{{tasks[3]}}/{{tasks[5]}}/{{date}}" method="POST">
-        <table>
+        <table id="t">
             <tr>
                 <th>Name</th>
                 <th>Age</th>
@@ -46,9 +63,9 @@
                 <td><input class="inp" list="myList" type="text" name="pref" id="pref"></td>
             </tr>
         </table>
-        <br><br>
         <input class="submit" type="submit" value="Book Ticket">
         </form>
+        <button class ="add" onclick="addRow()">Add Ticket</button>
     </div>
 </div>
 
@@ -64,5 +81,6 @@
     <option value="{{j}}">
     {% endfor %}
 </datalist>
+
 
     {% endblock %}
