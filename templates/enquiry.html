@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title> Tour On Wheels </title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/enquiry.css') }}">
+{% endblock %}
+
+{% block body %}
+<div class="content1">
+    <h1 style="text-align: center; font-size: x-large; font-family: 'Brush Script MT', cursive;"><br>Indian Railways</h1>
+        <h1 style="text-align: center; font-size: xx-large;">TOUR ON WHEELS</h1>
+    <div class="pnr">
+        <h4 style="text-align: center; font-size: xx-large; font-family: Copperplate, Papyrus, fantasy; color: blue; line-height: 5%;">PNR Enquiry</h4>
+        <form action="/info/{{pnr}}" method="POST">
+            <p>PNR Number: </p><input style="width: 85%;" type="type" name="pnr" id="pnr">
+            <p></p>
+            <input class="press" type="submit" value="Submit">
+        </form>
+    </div>
+</div>
+{% endblock %}

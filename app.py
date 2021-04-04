@@ -4,21 +4,21 @@ import os
 import re
 import numpy as np
 
-# connection = psycopg2.connect(
-#     host = "10.17.50.232",
-#     database = "group_40",
-#     user = "group_40",
-#     password = "CgegedIYggdx1",
-#     port = 5432
-# )
-
 connection = psycopg2.connect(
-    host = "localhost",
-    database = "irctc_db",
-    user = "krdipen",
-    password = "password",
+    host = "10.17.50.232",
+    database = "group_40",
+    user = "group_40",
+    password = "CgegedIYggdx1",
     port = 5432
 )
+
+# connection = psycopg2.connect(
+#     host = "localhost",
+#     database = "irctc_db",
+#     user = "krdipen",
+#     password = "password",
+#     port = 5432
+# )
 
 cursor = connection.cursor()
 
@@ -171,6 +171,9 @@ def details(src, dest, train_number, train_class, date):
             connection.commit()
         return render_template('print.html', name=name, age=age, gender=gender, email=email, mobile=mobile, seat=seat, pnr_number=pnr_number, tasks=tasks, date=date, src=src, dest=dest)
 
+@app.route('/enquiry/', methods=['POST', 'GET'])
+def enquiry():
+    return render_template('enquiry.html')
 
 if __name__ == "__main__":
     app.run(host="localhost", port=5040, debug=True)
