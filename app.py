@@ -11,24 +11,6 @@ connection = psycopg2.connect(
     password = "CgegedIYggdx1",
     port = 5432
 )
-# cursor = connection.cursor()
-
-# connection = psycopg2.connect(
-#     host = "127.0.0.1",
-#     database = "group_40",
-#     user = "postgres",
-#     password = "1907",
-#     port = 5432
-# )
-
-# connection = psycopg2.connect(
-#     host = "127.0.0.1",
-#     database = "railway",
-#     user = "postgres",
-#     password = "1907",
-#     port = 5432
-# )
-
 cursor = connection.cursor()
 
 regex_email = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
