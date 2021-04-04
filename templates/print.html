@@ -6,27 +6,53 @@
 {% endblock %}
 
 {% block body %}
-<div class="content1">
-    <h1 style="text-align: center"> Tour on Wheels</h1>
-    <h4>Train Booking</h4>
-    <h4>{{tasks[2]}} ({{tasks[3]}})</h4>
-    <h4>{{src}} to {{dest}}</h4>
-    <p> Date : {{date}}</p>
-    <p>Source : {{src}}</p>
-    <p>Destination : {{dest}}</p>
-    <p>Arrival Time on {{src}} : {{tasks[0]}}</p>
-    <p>Departure Time from {{src}} : {{tasks[1]}}</p>
-    <p>Arrival Time on {{dest}} : {{tasks[4]}}</p>
-    <p>Arrival Date on {{dest}} : {{tasks[7]}}</p>
-    <p>Class: {{tasks[5]}}</p>
 
-    <p>Name: {{name}}</p>
-    <p>Age: {{age}}</p>
-    <p>Gender: {{gender}}</p>
-    <p>Email: {{email}}</p>
-    <p>Mobile: {{mobile}}</p>
-    <p>Seat: {{seat}}</p>
-    <p>PNR Number: {{pnr_number}}</p>
+<div class="content1">
+    <h1 style="text-align: center; font-size: x-large; font-family: 'Brush Script MT', cursive;"><br>Indian Railways</h1>
+    <h1 style="text-align: center; font-size: xx-large;">TOUR ON WHEELS</h1>
+    <div class="info">
+        <h4 style="text-align: center; font-size: xx-large; font-family: Copperplate, Papyrus, fantasy; color: blue; line-height: 5%;">PNR NO: {{pnr_number}}</h4> 
+    <div class="content">
+        <div class="train" style="margin-left: 15%;">
+        <h3>{{src}} to {{dest}}</h3>
+        <h3 style="font-size: xxx-large; line-height: 1%;"> {{tasks[3]}}</h3>
+        <h5>{{tasks[2]}}</h5>
+    </div>
+        <div style="margin-left: 20%;" class="times">
+            <p><b>Arrival at {{src}}</b> : <br>{{date}} -> {{tasks[0]}}</p>
+        <p><b>Departure from {{src}}</b> : <br>{{tasks[1]}}</p>
+        <p><b>Arrival at {{dest}}</b> : <br> {{tasks[7]}} -> {{tasks[4]}}</p>
+        </div>
+        </div>
+        <h4 style="line-height: 5%;">Class: <span style="color: blue;">{{tasks[5]}}</span></h4>
+        <h4 style="line-height: 5%;">Status: <span style="color: blue;">{{status}}</span></h4>
+        <table id="t">
+            <tr>
+                <th>Name</th>
+                <th>Age</th>
+                <th>Gender</th>
+                <th>Email</th>
+                <th>Mobile</th>
+                <th>Coach</th>
+                <th>Seat</th>
+                <th>Birth Type</th>
+            </tr>
+            {% for task in vals%} 
+            <tr>
+                <td>{{task[0]}}</td>
+                <td>{{task[1]}}</td>
+                <td>{{task[2]}}</td>
+                <td>{{task[3]}}</td>
+                <td>{{task[4]}}</td>
+                <td>{{task[5][0]}}</td>
+                <td>{{task[5][1]}}</td>
+                <td>{{task[5][2]}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        <a href="/"><input class="submit" type="submit" value="Homepage"></a>
+    </div>
 </div>
+
 
 {% endblock %}

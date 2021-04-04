@@ -29,16 +29,16 @@
     <div class="info">
         <h4 style="text-align: center; font-size: xx-large; font-family: Copperplate, Papyrus, fantasy; color: blue; line-height: 5%;">Train Booking</h4>
         {% if status == "error" %}
-        <h4 style="text-align: center; font-size: xx-large; font-family: Copperplate, Papyrus, fantasy; color: RED; line-height: 5%;">A single seat can only be booked to a single person!</h4>
+        <h4 style="text-align: center; font-size: large;  fantasy; color: RED; line-height: 5%;">A single seat can only be booked to a single person!</h4>
         {% endif %}
     <div class="content">
-        <div class="train" style="margin-left: 5%;">
+        <div class="train" style="margin-left: 15%;">
         
         <h3>{{src}} to {{dest}}</h3>
         <h3 style="font-size: xxx-large; line-height: 1%;"> {{tasks[3]}}</h3>
         <h5>{{tasks[2]}}</h5>
     </div>
-        <div style="margin-left: 15%;" class="times">
+        <div style="margin-left: 20%;" class="times">
             <p><b>Arrival at {{src}}</b> : <br>{{date}} -> {{tasks[0]}}</p>
         <p><b>Departure from {{src}}</b> : <br>{{tasks[1]}}</p>
         <p><b>Arrival at {{dest}}</b> : <br> {{tasks[7]}} -> {{tasks[4]}}</p>
