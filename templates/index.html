@@ -9,19 +9,21 @@
 
 
 <div class="content1">
-    <h1 style="text-align: center"> Tour on Wheels</h1>
+     <h1 style="text-align: center; font-size: x-large; font-family: 'Brush Script MT', cursive;"><br>Indian Railways</h1>
+        <h1 style="text-align: center; font-size: xx-large;">TOUR ON WHEELS</h1>
     <div class='form'>
-        <h2 style="color: blue; text-align: center;">Search Train</h2>
+        <h2 style="color: blue; text-align: center; font-family: Copperplate, Papyrus, fantasy; font-size: x-large;">Search Train</h2>
         <form action="/" method="POST">
-        <p>Source: </p><input list="stations" name="source" id="source">
+        <p>Source: </p><input style="width: 85%;" list="stations" name="source" id="source">
         <datalist id="stations">
             {% for j in stations %}
             <option value="{{j}}">
             {% endfor %}
           </datalist>
-        <p>Date: </p><input type="date" name="date" id="date">
-        <p>Destination:</p><input list="stations" name="destination" id="destination">
-        <input type="submit" value="Search" >
+        <p>Date: </p><input style="width: 85%;" type="date" name="date" id="date">
+        <p>Destination:</p><input style="width: 85%;" list="stations" name="destination" id="destination">
+        <p></p>
+        <input class="press" type="submit" value="Find Train">
         </form>
     </div>
 </div>

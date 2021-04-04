@@ -1,14 +1,20 @@
 body {
     margin: 0 px;
     font-family: sans-serif;
-    background-color: rgba(27, 27, 27, 0.795);
+    background-color: #222a3f;
 }
 
-
+h1{
+    color: white;
+    line-height: 45%;
+    text-shadow: 0 0 30px rgba(5, 16, 78, 0.8);
+    text-align: center;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
 
 .content1 {
     margin: 0 auto;
-    height: 720px;
+    height: 770px;
     background-image: url('indian-2405928_1920.jpg');
     background-position: center; /* Center the image */
     background-repeat: no-repeat; /* Do not repeat the image */
@@ -18,13 +24,13 @@ body {
 
 .info {
     margin: auto;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 70%;
-  position: absolute;
-  width: 40%;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60%;
+    position: absolute;
+    width: 40%;
     padding-left: 3.5%;
     padding-right: 3.5%;
     padding-bottom: 3.5%;
@@ -34,7 +40,18 @@ body {
     position: absolute;
     background-color: white;
 }
+
+.content {
+
+    display: flex;
+}
+
+h4{
+    line-height: 10%;
+}
+
 table{
+    margin-top: 5%;
     width: 100%;
 }
 th {

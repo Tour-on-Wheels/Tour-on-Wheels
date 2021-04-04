@@ -15,9 +15,9 @@ import numpy as np
 
 connection = psycopg2.connect(
     host = "127.0.0.1",
-    database = "irctc_db",
-    user = "krdipen",
-    password = "password",
+    database = "railway",
+    user = "sanjaliagrawal",
+    password = "ALOHOMORA",
     port = 5432
 )
 
@@ -73,6 +73,7 @@ def index():
                         select count(*) from PNR  \
                         where date ='{date}' \
                         AND train_number = s1.train_number \
+                        AND delete=0 \
                     ) \
                 ) \
             ORDER BY s1.arrival;" )
@@ -99,6 +100,7 @@ FROM schedules AS s1, \
         SELECT coach.class, PNR.train_number, count(*) FROM PNR, coach \
         WHERE DATE ='{date}' \
         AND coach.coach_name = PNR.coach_no \
+        AND PNR.delete = 0 \
         GROUP BY coach.class, PNR.train_number \
     ) AS pnr \
     ON (pnr.train_number = ts.train_id \
@@ -123,6 +125,7 @@ def details(src, dest, train_number, train_class, date):
                 SELECT coach.class, PNR.train_number, count(*) FROM PNR, coach \
                 WHERE DATE ='{date}' \
                 AND coach.coach_name = PNR.coach_no \
+                AND PNR.delete = 0 \
                 GROUP BY coach.class, PNR.train_number \
             ) AS pnr \
             ON (pnr.train_number = ts.train_id \
@@ -142,7 +145,7 @@ def details(src, dest, train_number, train_class, date):
         all_types = len(seat_type)
         cursor.execute(f"SELECT coach_name, total_seats from coach where class = '{train_class}'")
         all_seats = cursor.fetchall()
-        cursor.execute(f"SELECT PNR.coach_no, PNR.seat_no from PNR, coach where PNR.train_number = '{train_number}' \
+        cursor.execute(f"SELECT PNR.coach_no, PNR.seat_no from PNR, coach where PNR.train_number = '{train_number}' AND PNR.delete = 0 \
         and coach.class = '{train_class}' and coach.coach_name = PNR.coach_no and PNR.date = '{date}'")
         filled_seats = cursor.fetchall()
         empty_seats = []
