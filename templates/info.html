@@ -28,7 +28,9 @@
     <h1 style="text-align: center; font-size: xx-large;">TOUR ON WHEELS</h1>
     <div class="info">
         <h4 style="text-align: center; font-size: xx-large; font-family: Copperplate, Papyrus, fantasy; color: blue; line-height: 5%;">Train Booking</h4>
-    
+        {% if status == "error" %}
+        <h4 style="text-align: center; font-size: xx-large; font-family: Copperplate, Papyrus, fantasy; color: RED; line-height: 5%;">A single seat can only be booked to a single person!</h4>
+        {% endif %}
     <div class="content">
         <div class="train" style="margin-left: 5%;">
         
